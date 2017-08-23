@@ -5,11 +5,18 @@ Created on Tue Aug 22 17:45:10 2017
 
 @author: lucasnn
 """
+
+# Programa em paralelo que calcula uma matriz ao quadrado(AxA = C)
+# Uma Thread para cada Linha x Coluna
+
 import threading
 import numpy as np
 
-ORDEM = 100
+#Cria a Matriz Aleatória de ordem N
+ORDEM = 2
+#Cria a Matriz Aleatória de ordem N
 matriz_aleat = np.random.rand(ORDEM,ORDEM)
+#Cria a Matriz que irá receber a resposta
 result = np.zeros((ORDEM, ORDEM))
 
 
@@ -20,39 +27,23 @@ class myThread(threading.Thread):
         self.threadID = threadID
         self.name = name
     def run(self):
-        # iterate through columns of Y
-        print(self.name)
+        # itera sobre as colunas de Y
+        #print(self.name)
         for j in range(len(matriz_aleat[0])):
-            # iterate through rows of Y
+            # itera sobre as linhas de Y
             for k in range(len(matriz_aleat)):
                 result[self.threadID][j] += matriz_aleat[self.threadID][k] * \
                                             matriz_aleat[k][j]
 
-
+#Cria um array de Threads de forma que irão fazer a operação Linha x Coluna
 thread_list = [myThread(N , "LC"+ str(N)) for N in range(ORDEM)]
-              
-
+    
+#Inicia cada thread e atrela sua execução do "main"
 for thr in thread_list:
     thr.start()
     thr.join()
 
+#imprime o array resultante
 for line in result:
     print(line)
-'''
-resultado = np.zeros((ORDEM, ORDEM))
 
-# iterate through rows of X
-for i in range(len(matriz_aleat)):
-   # iterate through columns of Y
-   for j in range(len(matriz_aleat[0])):
-       # iterate through rows of Y
-       for k in range(len(matriz_aleat)):
-           resultado[i][j] += matriz_aleat[i][k] * matriz_aleat[k][j]
-           #print(i, j, k)
-           
-for linha in resultado:
-   print(linha)
-
-if resultado.all() == result.all():
-    print("SOU FODA AAA")
-'''
