@@ -1,0 +1,7 @@
+1. Faça dois programas, um sequencial e outro paralelo, que realizem a multiplicação
+de duas matrizes. Na versão paralela, cada produto parcial (linha x coluna) deve ser
+realizado por uma thread distinta. Para comparar o resultado das duas versões,
+elabore um gráfico que reflita o ganho da versão paralela em função do tamanho da
+matriz. O ganho deve ser calculado a partir dos tempos de execução de cada versão.
+
+Pode ser usado o comando time do linux?
