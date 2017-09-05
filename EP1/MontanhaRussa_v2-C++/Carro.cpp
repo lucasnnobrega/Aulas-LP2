@@ -21,15 +21,33 @@ Carro::~Carro() {
 
 void Carro::esperaEncher() {
 	//while (Carro::numPassageiros < Carro::CAPACIDADE) { delay; }
+	/* Deve ficar no while até encher
+	 Join nas threads que entraram no carrinho
+	*/
 }
 
 void Carro::daUmaVolta() {
-	// Dorme por um tempo fixo
+	/*Dorme por um tempo fixo
+	1 - todas tem que dormir?
+	Como Fazer isso?
+		1- Colocando A thread principal (carro) para dormir
+		controlará todas os passageiros(Threads com Join)
+		2- Mandando todas as threads (passageiros) dormir 
+		por um tempo determinado (Tempo deslocado)
+
+	*/
 	// voltaAcabou = true
 }
 
 void Carro::esperaEsvaziar() {
 	//while (Carro::numPassageiros > 0) { delay; }
+	/*
+
+
+
+
+
+	*/
 }
 
 int Carro::getNVoltas() {

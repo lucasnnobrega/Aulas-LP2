@@ -13,8 +13,15 @@ class Parque;
 class Carro {
 public:
 	static const int CAPACIDADE;
+	/*
+	Perde um aspecto da orientação a objeto pois a 
+	variável estática é comum entre todos os objetos instanciados
+	da classe tornando inviável a construção do carro 2
+	*/
 	static int numPassageiros;
 
+
+	
 	Carro(Parque *p);
 	virtual ~Carro();
 	void esperaEncher();
