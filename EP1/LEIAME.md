@@ -7,8 +7,8 @@ Considere:
 
 Pseudocódigo de condição não descrita no EP1:
 
-se tempo no passeio é igual para todos:
+se tempo no passeioPeloParque é igual para todos:
 	todos teriam o mesmo numero de vezes na montanha russa após tempo*10
 
-se tempo no passeio for aleatório:
+se tempo no passeioPeloParque for aleatório:
 	threads irão rodar mais vezes na montanha russa que outros
