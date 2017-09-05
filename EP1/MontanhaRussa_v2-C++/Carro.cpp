@@ -23,6 +23,7 @@ void Carro::esperaEncher() {
 	//while (Carro::numPassageiros < Carro::CAPACIDADE) { delay; }
 	/* Deve ficar no while até encher
 	 Join nas threads que entraram no carrinho
+	Tem um fetch_add
 	*/
 }
 
@@ -42,6 +43,9 @@ void Carro::daUmaVolta() {
 void Carro::esperaEsvaziar() {
 	//while (Carro::numPassageiros > 0) { delay; }
 	/*
+	Tem um fetch_add com decremento na mesma variável de 
+	esperaEncher
+	
 
 
 
