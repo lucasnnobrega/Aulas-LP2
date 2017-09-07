@@ -1,4 +1,4 @@
-OBJFILES = ${wildcard ./include/*.cpp}
+OBJFILES = ${wildcard ./*.cpp}
 
 all:
 	g++ -std=c++11 -pthread ${OBJFILES} -o main
