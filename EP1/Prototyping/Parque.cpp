@@ -9,8 +9,11 @@
 #include "include/Passageiro.h"
 
 
+using namespace std::chrono_literals;
+
 Parque::Parque(int capacidade) : carro(this, capacidade) {
 	carro.run();
+	std::this_thread::sleep_for(1s);
 }
 
 Parque::~Parque() {

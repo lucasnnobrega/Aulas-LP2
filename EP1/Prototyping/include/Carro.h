@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#define DURACAO_DA_VOLTA 3000
+#define DURACAO_DA_VOLTA 8000
 
 class Parque;
 
