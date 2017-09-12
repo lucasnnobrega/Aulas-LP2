@@ -31,6 +31,8 @@ class Carro {
 
 	Carro(Parque *p, int capacidade);
 	~Carro();
+	void join();
+
 	void esperaEncher();
 	void daUmaVolta();
 	void esperaEsvaziar();

@@ -21,6 +21,11 @@ Carro::~Carro() {
 
 }
 
+void Carro::join(){
+	if(t.joinable())
+		t.join();
+}
+
 void Carro::esperaEncher() {
 	std::cout << "Esperando encher" << std::endl;
 	aberto = true;

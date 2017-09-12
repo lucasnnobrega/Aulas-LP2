@@ -30,6 +30,7 @@ public:
 	Passageiro(Carro *c, int id);
 	virtual ~Passageiro();
 	void entraNoCarro();
+	void join();
 	void esperaVoltaAcabar();
 	void saiDoCarro();
 	void passeiaPeloParque();

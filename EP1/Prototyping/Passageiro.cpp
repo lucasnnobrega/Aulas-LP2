@@ -1,3 +1,4 @@
+
 /*
  * Passageiro.cpp
  *
@@ -28,22 +29,28 @@ Passageiro::~Passageiro() {
 	}
 }
 
+void Passageiro::join(){
+	if(t.joinable()){
+		t.join();
+	}
+}
+
 void Passageiro::entraNoCarro() {
 	// Protocolo de entrada o Algoritmo da Padaria
 	turns->at(id) = 1;
-
 	turns->at(id) = *std::max_element(turns->begin(), turns->end()) + 1 ;
 	for(int j = 0; j < turns->size() && j != id; j++){
-		while(turns->at(j) != 0 && (turns->at(id) > turns->at(j) || turns->at(id) == turns->at(j) && id > j)){
+		while(carro->cheio || (turns->at(j) != 0 && (turns->at(id) > turns->at(j) || turns->at(id) == turns->at(j) && id > j))){
 			asm("");
 		}
 	}
 	//CriticalSection
-	carro->numPassageiros.fetch_add(1);
-	if(carro->numPassageiros == carro->capacidade){//Se esse passageiro deve ser o ultimo a entrar
-		carro->numPassageiros.fetch_add(1);
-		carro->aberto = false;
-		carro->cheio = true;
+	if(carro->numPassageiros.load() < carro->capacidade ){
+		carro->numPassageiros.fetch_add(1);	
+		if(carro->numPassageiros.load() == carro->capacidade){
+			carro->aberto = false;
+			carro->cheio = true;
+		}
 	}
 	turns->at(id) = 0;
 	//NonCriticalSection
@@ -63,6 +70,10 @@ void Passageiro::esperaVoltaAcabar() {
 
 void Passageiro::saiDoCarro() {
 	// Decrementa o numero de passageiros no carro (use a funcao fetch_add)
+	std::stringstream stream;
+	stream << "O passageiro " << id << " entrou do carro\n";
+	std::cout << stream.rdbuf();
+	std::cout.flush();
 	carro->numPassageiros.fetch_add(-1);
 }
 

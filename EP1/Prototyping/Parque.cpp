@@ -15,8 +15,13 @@ Parque::Parque(int capacidade) : carro(this, capacidade) {
 
 Parque::~Parque() {
 	for(Passageiro* p : passageiros){
-		p->~Passageiro();
+		p->join();	
 	}
+	carro.join();
+	for(Passageiro* p : passageiros){
+		delete p;	
+	}
+
 }
 
 int Parque::getNumPessoas(){
