@@ -10,7 +10,7 @@
 
 
 Parque::Parque(int capacidade) : carro(this, capacidade) {
-
+	carro.run();
 }
 
 Parque::~Parque() {

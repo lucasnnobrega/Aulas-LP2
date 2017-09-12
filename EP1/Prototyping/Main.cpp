@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <exception>
 #include <thread>
 #include "include/Parque.h"
 #include "include/Carro.h"
@@ -8,10 +9,14 @@
 using namespace std;
 
 int main() {
-	Parque parque(10);
-
-    for (int i = 0; i < 10; i++) {
-    	parque.addPassageiro(i);
-    }
+	try{
+		Parque parque(5);
+   		for (int i = 0; i < 10; i++) {
+    		parque.addPassageiro(i);
+    	}
+	}
+	catch(const std::exception& e){
+		std::cout << e.what() << std::endl;
+	}
 
 }

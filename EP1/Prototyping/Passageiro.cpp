@@ -23,6 +23,9 @@ Passageiro::Passageiro(Carro *c, int id_) {
 }
 
 Passageiro::~Passageiro() {
+	if(t.joinable()){
+		t.join();
+	}
 }
 
 void Passageiro::entraNoCarro() {
@@ -32,17 +35,13 @@ void Passageiro::entraNoCarro() {
 	turns->at(id) = *std::max_element(turns->begin(), turns->end()) + 1 ;
 	for(int j = 0; j < turns->size() && j != id; j++){
 		while(turns->at(j) != 0 && (turns->at(id) > turns->at(j) || turns->at(id) == turns->at(j) && id > j)){
-			while(!(carro->aberto && carro->numPassageiros.load() != 0) ){
-
-			}
 			asm("");
 		}
 	}
 	//CriticalSection
-	if(carro->numPassageiros.load() < carro->capacidade){
+	carro->numPassageiros.fetch_add(1);
+	if(carro->numPassageiros == carro->capacidade){//Se esse passageiro deve ser o ultimo a entrar
 		carro->numPassageiros.fetch_add(1);
-	}
-	else{//Se esse passageiro deve ser o ultimo a entrar
 		carro->aberto = false;
 		carro->cheio = true;
 	}
@@ -58,7 +57,7 @@ void Passageiro::entraNoCarro() {
 
 void Passageiro::esperaVoltaAcabar() {
 	while (!carro->aberto) { 
-		std::this_thread::sleep_for(std::chrono::milliseconds(40));
+		std::this_thread::sleep_for(std::chrono::milliseconds(30));
 	}
 }
 

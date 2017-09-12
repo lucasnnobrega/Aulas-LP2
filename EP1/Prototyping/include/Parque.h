@@ -18,7 +18,7 @@ class Passageiro;
 
 class Parque {
 	std::vector<Passageiro*> passageiros;
-	std::vector<int> turns = {0};	
+	std::vector<int> turns;	
 	Carro carro;
 	int numPessoas = 0;
 	public:

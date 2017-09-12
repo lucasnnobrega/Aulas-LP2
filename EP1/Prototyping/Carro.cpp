@@ -13,9 +13,12 @@ Carro::Carro(Parque *p, int capacidade_) {
 	capacidade = capacidade_;
 	turns = p->getTurnsPtr();
 	parque = p;
+	cheio = false;
+	aberto = true;
 }
 
 Carro::~Carro() {
+
 }
 
 void Carro::esperaEncher() {
