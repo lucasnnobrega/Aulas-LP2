@@ -1,0 +1,6 @@
+Volatile:
+     volatile is a hint to the implementation to avoid 
+    aggressive optimization involving the object because
+    the value of the object might be changed by means 
+    undetectable by an implementation.
+

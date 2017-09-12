@@ -44,7 +44,7 @@ void Passageiro::entraNoCarro() {
 	for(int j = 0; j < turns->size(); j++){
 		if(j == id) 
 			continue;
-		while(carro->cheio || (turns->at(j) != 0 && (turns->at(id) > turns->at(j) || (turns->at(id) == turns->at(j) && id > j) ))){
+		while(!carro->vazio || (turns->at(j) != 0 && (turns->at(id) > turns->at(j) || (turns->at(id) == turns->at(j) && id > j) ))){
 		}
 	}
 	//CriticalSection
@@ -76,11 +76,11 @@ void Passageiro::saiDoCarro() {
 	// Decrementa o numero de passageiros no carro (use a funcao fetch_add)
 	carro->numPassageiros.fetch_add(-1);
 
-	lock(carro->parque->sharedLock);
+//	lock(carro->parque->sharedLock);
 	if(carro->numPassageiros == 0){
 		carro->cheio = false;
 	}
-	unlock(carro->parque->sharedLock);
+//	unlock(carro->parque->sharedLock);
 
 	std::stringstream stream;
 	stream << "O passageiro " << id << " saiu do carro\n";

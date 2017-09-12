@@ -30,14 +30,14 @@ void Carro::join(){
 void Carro::esperaEncher() {
 	//TODO FIX POSSIBLE RACE
 	std::cout << "Esperando encher" << std::endl;
-	lock(parque->sharedLock);
+//	lock(parque->sharedLock);
 	while (numPassageiros < capacidade){
-		unlock(parque->sharedLock);
+//		unlock(parque->sharedLock);
 		std::this_thread::sleep_for(std::chrono::milliseconds(30));
-		lock(parque->sharedLock);
+//		lock(parque->sharedLock);
 	}
 	cheio = true;
-	unlock(parque->sharedLock);
+//	unlock(parque->sharedLock);
 	std::cout << "Cheio" << std::endl;
 }
 
@@ -51,9 +51,17 @@ void Carro::daUmaVolta() {
 void Carro::esperaEsvaziar() {
 	std::cout << "Esperando esvaziar" << std::endl;
 
-	while(numPassageiros > 0){
+	lock(parque->sharedLock);
+	while(numPassageirosAux == capacidade){
+		unlock(parque->sharedLock);
+		std::this_thread::sleep_for(std::chrono::milliseconds(30));
+		lock(parque->sharedLock);
 	}
+
 	aberto = false;
+	vazio = true;
+	numPassageiros.store(0);
+	unlock(parque->sharedLock);
 
 	std::cout << "Carro vazio" << std::endl;
 }

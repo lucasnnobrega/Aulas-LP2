@@ -19,8 +19,10 @@ class Parque;
 
 class Carro {
 	std::atomic<int> numPassageiros{0};
+	int numPassageirosAux = 0;
 	bool aberto;
 	bool cheio;
+	bool vazio = true;
 	int voltas;
 	int capacidade;
 	Parque *parque;
