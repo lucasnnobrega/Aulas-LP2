@@ -13,13 +13,14 @@
 #include <utility>
 #include <vector>
 
-#define DURACAO_DA_VOLTA 8000
+#define DURACAO_DA_VOLTA 200
 
 class Parque;
 
 class Carro {
 	std::atomic<int> numPassageiros{0};
-	bool aberto;
+	bool voltaAcabou;
+	bool saindo;
 	bool cheio;
 	int voltas;
 	int capacidade;

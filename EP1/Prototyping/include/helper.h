@@ -6,6 +6,7 @@ void lock(std::atomic_flag&);
 void unlock(std::atomic_flag&);
 //------------------------------------
 namespace Helpers{
+	/*
 	int endl = 9;
 	template<int n = 1>
 	class sync_cout{
@@ -35,5 +36,6 @@ namespace Helpers{
 			mut.unlock();
 		}
 	}
+	*/
 }
 #endif //__EP1HELPERS__
