@@ -15,7 +15,7 @@ Carro::Carro(Parque *p, int capacidade_) {
 	turns = p->getTurnsPtr();
 	parque = p;
 	cheio = false;
-	aberto = false;
+	aberto = true;
 }
 
 Carro::~Carro() {
@@ -45,23 +45,23 @@ void Carro::daUmaVolta() {
 	//Dorme por um tempo fixo
 	std::cout << "Iniciando uma volta" << std::endl;
 	std::this_thread::sleep_for(std::chrono::milliseconds(DURACAO_DA_VOLTA));
-	aberto = true;
+	aberto = false;
 }
 
 void Carro::esperaEsvaziar() {
 	std::cout << "Esperando esvaziar" << std::endl;
 
-	lock(parque->sharedLock);
+	//lock(parque->sharedLock);
 	while(numPassageirosAux == capacidade){
-		unlock(parque->sharedLock);
+		//unlock(parque->sharedLock);
 		std::this_thread::sleep_for(std::chrono::milliseconds(30));
-		lock(parque->sharedLock);
+		//lock(parque->sharedLock);
 	}
 
-	aberto = false;
+	aberto = true;
 	vazio = true;
 	numPassageiros.store(0);
-	unlock(parque->sharedLock);
+	//unlock(parque->sharedLock);
 
 	std::cout << "Carro vazio" << std::endl;
 }

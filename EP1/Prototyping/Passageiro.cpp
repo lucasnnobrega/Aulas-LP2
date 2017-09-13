@@ -44,7 +44,7 @@ void Passageiro::entraNoCarro() {
 	for(int j = 0; j < turns->size(); j++){
 		if(j == id) 
 			continue;
-		while(!carro->vazio || (turns->at(j) != 0 && (turns->at(id) > turns->at(j) || (turns->at(id) == turns->at(j) && id > j) ))){
+		while(!carro->cheio || (turns->at(j) != 0 && (turns->at(id) > turns->at(j) || (turns->at(id) == turns->at(j) && id > j) )) || carro->aberto){
 		}
 	}
 	//CriticalSection
@@ -79,6 +79,7 @@ void Passageiro::saiDoCarro() {
 //	lock(carro->parque->sharedLock);
 	if(carro->numPassageiros == 0){
 		carro->cheio = false;
+		carro->aberto = true;
 	}
 //	unlock(carro->parque->sharedLock);
 
