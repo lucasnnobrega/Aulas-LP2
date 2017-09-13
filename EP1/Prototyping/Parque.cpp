@@ -11,7 +11,7 @@
 
 using namespace std::chrono_literals;
 
-Parque::Parque(int capacidade) : carro(this, capacidade) {
+Parque::Parque(int capacidade, int maxVoltas) : carro(this, capacidade, maxVoltas) {
 	carro.run();
 	std::this_thread::sleep_for(1s);
 }

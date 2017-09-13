@@ -12,12 +12,13 @@
 using namespace std::chrono_literals;
 using namespace Helpers;
 
-Carro::Carro(Parque *p, int capacidade_) {
+Carro::Carro(Parque *p, int capacidade_, int maxVoltas_) {
 	capacidade = capacidade_;
 	turns = p->getTurnsPtr();
 	parque = p;
 	cheio = false;
 	voltaAcabou = false;
+	maxVoltas = maxVoltas_;
 	saindo = false;
 }
 
@@ -74,7 +75,9 @@ void Carro::esperaEsvaziar() {
 //	aberto = true;
 //	unlock(parque->sharedLock);
 
-	std::cout << "Carro vazio" << std::endl;
+	Printer::start();
+	Printer::append("Carro vazio");
+	Printer::end();
 }
 
 int Carro::getNVoltas() {

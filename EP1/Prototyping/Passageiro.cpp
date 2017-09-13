@@ -18,6 +18,8 @@ std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_int_distribution<> dis(1000,3000);
 
+using namespace Helpers;
+
 Passageiro::Passageiro(Carro *c, int id_) {
 	id = id_;
 	carro = c;
@@ -58,15 +60,23 @@ void Passageiro::entraNoCarro() {
 			carro->cheio = true;
 		}
 	}
-	std::stringstream stream;
-	stream << "O passageiro " << id << " entrou no carro\n";
+//	std::stringstream stream;
+//	stream << "O passageiro " << id << " entrou no carro\n";
 	turns->at(id) = 0;
 
 	//NonCriticalSection
 	//Log
-	std::cout << stream.rdbuf();
-	std::cout.flush();
+//	std::cout << stream.rdbuf();
+//	std::cout.flush();
 	
+	Printer::start();
+	Printer::append("O passageiro ");
+	Printer::append(std::to_string(id));
+	Printer::append(" entrou no carro");
+	Printer::end();
+
+//	Helpers::sync_cout << "O passageiro: " << id << " saiu do carro" << Helpers::sync_endl; //TODO COM ESPECIALIZACAO DE TEMPLATES SERIA ASSIM TAO BONITO
+
 }
 
 void Passageiro::esperaVoltaAcabar() {
@@ -86,10 +96,11 @@ void Passageiro::saiDoCarro() {
 	}
 //	unlock(carro->parque->sharedLock);
 
-	std::stringstream stream;
-	stream << "O passageiro " << id << " saiu do carro\n";
-	std::cout << stream.rdbuf();
-	std::cout.flush();
+	Printer::start();
+	Printer::append("O passageiro ");
+	Printer::append(std::to_string(id));
+	Printer::append(" saiu do carro");
+	Printer::end();
 }
 
 void Passageiro::passeiaPeloParque() {

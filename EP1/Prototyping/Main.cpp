@@ -9,14 +9,8 @@
 using namespace std;
 
 int main() {
-	try{
-		Parque parque(5);
-   		for (int i = 0; i < 10; i++) {
-    		parque.addPassageiro(i);
-    	}
-	}
-	catch(const std::exception& e){
-		std::cout << e.what() << std::endl;
-	}
-
+	Parque parque(5, 3);
+	for (int i = 0; i < 100; i++) {
+   		parque.addPassageiro(i);
+   	}
 }

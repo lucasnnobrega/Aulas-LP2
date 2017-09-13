@@ -2,10 +2,21 @@
 #define __EP1HELPERS__
 #include <atomic>
 #include <mutex>
+
+class Done{};
+//------------------------------------
 void lock(std::atomic_flag&);
 void unlock(std::atomic_flag&);
 //------------------------------------
 namespace Helpers{
+	class Printer{
+		public:
+		static std::string stringSoFar;
+		static std::mutex mut;
+		static void start();
+		static void end();
+		static void append(std::string a);	
+	};
 	/*
 	int endl = 9;
 	template<int n = 1>

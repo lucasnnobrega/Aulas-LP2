@@ -23,6 +23,7 @@ class Carro {
 	bool saindo;
 	bool cheio;
 	int voltas;
+	int maxVoltas;
 	int capacidade;
 	Parque *parque;
 	std::thread t;
@@ -30,7 +31,7 @@ class Carro {
 
 	public:
 
-	Carro(Parque *p, int capacidade);
+	Carro(Parque *p, int capacidade, int maxVoltas_);
 	~Carro();
 	void join();
 

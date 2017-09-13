@@ -24,7 +24,7 @@ class Parque {
 	public:
 	std::atomic_flag sharedLock = ATOMIC_FLAG_INIT;
 
-	Parque(int capacidade);
+	Parque(int capacidade, int maxVoltas);
 	~Parque();
 	
 	std::vector<int>* getTurnsPtr();
