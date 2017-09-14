@@ -15,8 +15,13 @@ int main(int argc, char** argv) {
 		Passageiro::minSleep = std::stoi(std::string(argv[1]));
 		Passageiro::maxSleep = std::stoi(std::string(argv[2]));;
 	}
+	else{
+		std::cout << "Usage: ./main [minSleep] [maxSleep]\n\tOBS: Sleep in ms" << std::endl;
+		return 0;
+	}
 	Parque parque(5, 10);
 	for (int i = 0; i < 10; i++) {
    		parque.addPassageiro(i);
    	}
+	return 0;
 }
