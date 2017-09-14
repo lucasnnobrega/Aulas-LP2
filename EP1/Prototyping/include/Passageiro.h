@@ -28,6 +28,9 @@ class Passageiro {
 	std::vector<int>* turns;//Endereço do array de inteiros compartilhados
 	std::thread t;//Thread com loop de ação desse passageiro
 public:
+	static int minSleep;
+	static int maxSleep;
+
 	Passageiro(Carro *c, int id);//Construtor
 	virtual ~Passageiro();//Destrutor
 	void entraNoCarro();//Entrada no carro, protegida pelo algoritmo da padaria;

@@ -15,7 +15,6 @@
 
 class Passageiro;
 
-
 class Parque {
 	std::vector<Passageiro*> passageiros;//Vetor com todos os passageiros que estão atualmente no parque
 	std::vector<int> turns;//Array de turnos compartilhados para algoritmo da padaria

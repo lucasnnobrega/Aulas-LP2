@@ -12,12 +12,13 @@
 #include "include/Carro.h"
 #include "include/Parque.h"
 
-#define MAX_NUM_VOLTAS 50
+int Passageiro::minSleep = 3000;
+int Passageiro::maxSleep = 3000;
+
 
 // Random para distribuir o tempo de passeio
 std::random_device rd;
 std::mt19937 gen(rd());
-std::uniform_int_distribution<> dis(1000,3000);
 
 // Acesso de printer, sem necessidade de colocar helpers
 using namespace Helpers;
@@ -105,6 +106,7 @@ void Passageiro::saiDoCarro() {
 
 void Passageiro::passeiaPeloParque() {
 	// Dorme um tempo aleatorio
+	std::uniform_int_distribution<> dis(Passageiro::minSleep,Passageiro::maxSleep);
 	std::this_thread::sleep_for(std::chrono::milliseconds(dis(gen)));
 }
 
