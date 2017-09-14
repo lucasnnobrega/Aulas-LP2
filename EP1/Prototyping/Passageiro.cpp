@@ -14,88 +14,88 @@
 
 #define MAX_NUM_VOLTAS 50
 
+// Random para distribuir o tempo de passeio
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_int_distribution<> dis(1000,3000);
 
+// Acesso de printer, sem necessidade de colocar helpers
 using namespace Helpers;
 
+//Construtor de Passageiro
 Passageiro::Passageiro(Carro *c, int id_) {
-	id = id_;
-	carro = c;
-	parque = c->getParquePtr();
-	turns = carro->getParquePtr()->getTurnsPtr();
+	id = id_; // id de passageiro
+	carro = c; // definição do ponteiro para carro
+	parque = c->getParquePtr(); // ponteiro de carro para o parque
+	turns = carro->getParquePtr()->getTurnsPtr(); // inicialização do ponteiro para turn'
 }
 
+//Destrutor de passageiro 
 Passageiro::~Passageiro() {
 	if(t.joinable()){
 		t.join();
 	}
 }
-
-void Passageiro::join(){
-	if(t.joinable()){
-		t.join();
-	}
+//Retornando o endereço da thread desse passageiros
+std::thread* Passageiro::getThreadPtr(){
+	return &t;
 }
 
+//Protocolo de entrada no carro protegida pelo algoritmo da padaria
 void Passageiro::entraNoCarro() {
 	// Protocolo de entrada o Algoritmo da Padaria
-	turns->at(id) = 1;
-	turns->at(id) = *std::max_element(turns->begin(), turns->end()) + 1 ;
-	for(int j = 0; j < turns->size(); j++){
-		if(j == id) 
+	turns->at(id) = 1;//Na primeira iteração, cada passageiro recebe ticket 1
+	turns->at(id) = *std::max_element(turns->begin(), turns->end()) + 1 ; //Calculando maximo
+	for(int j = 0; j < turns->size(); j++){//conferindo tickets dos demais passageiros
+		if(j == id) //Exceto o proprio ticket
 			continue;
+		//Espera ocupada
+		//Segura a thread até que seja sua vez OU não cheio OU não saindo
 		while((turns->at(j) != 0 && 
 			 (turns->at(id) > turns->at(j) || (turns->at(id) == turns->at(j) && id > j) )) || carro->saindo || carro->cheio){
 
 		}
 	}
-	//CriticalSection
-//	std::cout << "PASSEI" << std::endl;
+	//Seção Critica
+	//Confere se o numero de pasageiros no carro é menor que a capacidade
 	if(carro->numPassageiros <= carro->capacidade ){
+		//Incrementa o numero de passageiros
 		carro->numPassageiros.fetch_add(1);	
 		if(carro->numPassageiros == carro->capacidade){//Se esse passageiro e o ultimo
-//			carro->aberto = false;
 			carro->cheio = true;
 		}
 	}
-//	std::stringstream stream;
-//	stream << "O passageiro " << id << " entrou no carro\n";
+	//Zerando os tickets das threads que sairam da seção critica
 	turns->at(id) = 0;
 
-	//NonCriticalSection
+	//Seção não critica
 	//Log
-//	std::cout << stream.rdbuf();
-//	std::cout.flush();
-	
 	Printer::start();
 	Printer::append("O passageiro ");
 	Printer::append(std::to_string(id));
 	Printer::append(" entrou no carro");
 	Printer::end();
-
 //	Helpers::sync_cout << "O passageiro: " << id << " saiu do carro" << Helpers::sync_endl; //TODO COM ESPECIALIZACAO DE TEMPLATES SERIA ASSIM TAO BONITO
 
 }
-
+	
+//Espera volta acabar, enquanto o tempod e volta do carro não terminar, continue dormindo
 void Passageiro::esperaVoltaAcabar() {
 	while (!carro->voltaAcabou) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(30));
 	}
 }
-
+//Saindo do carro
 void Passageiro::saiDoCarro() {
 	// Decrementa o numero de passageiros no carro (use a funcao fetch_add)
 	carro->numPassageiros.fetch_add(-1);
-
-
-//	lock(carro->parque->sharedLock);
+	
+	//Se esta for a ultima thread que sair do carro, não cheio
 	if(carro->numPassageiros == 0){
 		carro->cheio = false;
 	}
-//	unlock(carro->parque->sharedLock);
-
+	
+	//Log
 	Printer::start();
 	Printer::append("O passageiro ");
 	Printer::append(std::to_string(id));
@@ -108,16 +108,23 @@ void Passageiro::passeiaPeloParque() {
 	std::this_thread::sleep_for(std::chrono::milliseconds(dis(gen)));
 }
 
-void Passageiro::run() {
-	t = std::move(std::thread([this](){
-		while (1) {
-			entraNoCarro(); 
-			esperaVoltaAcabar();
-			saiDoCarro(); 
-			passeiaPeloParque(); 
+//Loop de vida do passageiro
+void Passageiro::start(){
+	while (1) {
+		entraNoCarro(); 
+		esperaVoltaAcabar();
+		saiDoCarro(); 
+		//Quando o parque fechar, acabe o programa
+		if(carro->getParquePtr()->parqueFechado){
+			std::exit(1);
 		}
-	}));
-
-	// decrementa o numero de pessoas no parque
+		passeiaPeloParque(); 
+	}
 }
 
+//Passageiro run, execução.
+void Passageiro::run() {
+	//está sendo atribuido a t o endereço da thread passageiro
+	//execução do metodo start
+	t = std::thread(&Passageiro::start, this);
+}

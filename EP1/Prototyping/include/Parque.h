@@ -17,20 +17,19 @@ class Passageiro;
 
 
 class Parque {
-	std::vector<Passageiro*> passageiros;
-	std::vector<int> turns;	
-	Carro carro;
-	int numPessoas = 0;
+	std::vector<Passageiro*> passageiros;//Vetor com todos os passageiros que estão atualmente no parque
+	std::vector<int> turns;//Array de turnos compartilhados para algoritmo da padaria
+	Carro carro;//Carro da montanha russa
+	int numPessoas = 0;//Numero de pessoas ate agora
 	public:
-	std::atomic_flag sharedLock = ATOMIC_FLAG_INIT;
+	bool parqueFechado;//O parque esta fechado?
 
-	Parque(int capacidade, int maxVoltas);
-	~Parque();
+	Parque(int capacidade, int maxVoltas);//Construtor
+	~Parque();//Destrutor
 	
-	std::vector<int>* getTurnsPtr();
-	int getNumPessoas();
-	void addPassageiro(Passageiro *p);
-	void addPassageiro(int id);
+	std::vector<int>* getTurnsPtr();//Retorna endereço do vetor de inteiros compartilhados pelos passageiros
+	int getNumPessoas();//Retorna numero de pessoas atualmente no parque
+	void addPassageiro(int id);//Dado um id inteiro, construi um passageiro e adiciona-o ao parque
 
 };
 

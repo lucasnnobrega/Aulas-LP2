@@ -16,25 +16,29 @@
 #include <chrono>
 #include <utility>
 #include <random>
+#include "./Passageiro.h"
 
 class Carro;
 class Parque;
 
 class Passageiro {
-	int id;
-	Carro *carro;
-	Parque *parque;
-	std::vector<int>* turns;
-	std::thread t;
+	int id; //Id do passageiro atual
+	Carro *carro;//Endereço do carro que esse passageiro tentara entrar
+	Parque *parque;//Endereço do parque que contem o carro acima
+	std::vector<int>* turns;//Endereço do array de inteiros compartilhados
+	std::thread t;//Thread com loop de ação desse passageiro
 public:
-	Passageiro(Carro *c, int id);
-	virtual ~Passageiro();
-	void entraNoCarro();
-	void join();
-	void esperaVoltaAcabar();
-	void saiDoCarro();
-	void passeiaPeloParque();
-	void run();
+	Passageiro(Carro *c, int id);//Construtor
+	virtual ~Passageiro();//Destrutor
+	void entraNoCarro();//Entrada no carro, protegida pelo algoritmo da padaria;
+	void join();//se t.joinable(), t.join()
+	void esperaVoltaAcabar();//Espera ocupada
+	std::thread* getThreadPtr();//Retorna endereço da thread desse passageiro
+	void saiDoCarro();//Espera ocupada
+	void passeiaPeloParque();//Dorme um tempo aleatorio
+
+	void run();//Inicia t com start
+	void start();//Loop de ação desse passageiro
 };
 
 #endif /* PASSAGEIRO_H_ */
