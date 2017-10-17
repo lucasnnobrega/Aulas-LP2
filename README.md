@@ -7,3 +7,7 @@ Comparação entre uma multiplicação sequencial e com o uso de threads.
 #### Exercício de Programação 1
 Utiliza o conceito de algorítimo justos(Da Padaria) para simular um parque de 
 diversões.
+
+#### Exercício de Programação 2
+Utiliza semáforos para implementar a passagem de bastão para simular um banheiro
+unissex
