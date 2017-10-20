@@ -1,5 +1,11 @@
+#ifndef BANHEIRO
+#define BANHEIRO
 #include <iostream>
 #include <mutex>
+
+#include "../include/Homem.h"
+#include "../include/Mulher.h"
+
 
 class Banheiro{
     int max_pessoas;
@@ -10,3 +16,4 @@ class Banheiro{
         bool banheiroCheio();
           bool banheiroVazio();
   };
+#endif

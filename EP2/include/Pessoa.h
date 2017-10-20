@@ -1,3 +1,6 @@
+
+#ifndef PESSOA
+#define PESSOA
 #include <iostream>
 #include <mutex>
 #include <random>
@@ -7,26 +10,29 @@
 
 using namespace std;
 
+class Banheiro;
+
 //GERANDO  VALORES ALEATORIOS QUE SERÃO UTILIZADOS NO SLEEP
-struct randomGenerator{	
+class RandomGenerator{	
     std::random_device rd;
     std::mt19937 gen;
-    std::uniform_real_distribution<> dis;
-        public:
-        randomGenerator(int min, int max) : dis(min,max){
-        gen.seed(rd());
-        }
-        double operator()(){
-            return dis(gen);
-        }
+    std::uniform_int_distribution<> dis;
+    public:
+    RandomGenerator(int min = MIN_TIME, int max = MAX_TIME) : dis(min,max){
+    	gen.seed(rd());
+    }
+    double operator()(){
+	    return dis(gen);
+    }
 };
 
 class Pessoa{
-        RandomGenerator randomDis(MIN_TIME, MAX_TIME);
+        RandomGenerator randomDis;
         Banheiro* banheiroAtual;
-          public:
-            virtual void entrarNoBanheiro(Banheiro& banheiro);
-            void sairDoBanheiro();
-            void dormir();
+        public:
+        virtual void entrarNoBanheiro(Banheiro& banheiro);
+        void sairDoBanheiro();
+        void dormir();
         Pessoa(){};
 };
+#endif
