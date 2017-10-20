@@ -4,7 +4,8 @@
 
 class Homem : public Pessoa{
     public:
-        void entrarNoBanheiro(Banheiro& banheiro);
+        void entrarNoBanheiro(Banheiro* banheiro);
+		void sairDoBanheiro();
     };
 
 #endif

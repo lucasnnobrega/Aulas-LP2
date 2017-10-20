@@ -2,7 +2,7 @@
 
 void Homem::entrarNoBanheiro(Banheiro* banheiro){
 	banheiro->e.lock();
-
+	if(banheiro->cheio())
 }
 
 
