@@ -3,8 +3,6 @@
 #define PESSOA
 #include <iostream>
 #include <mutex>
-#include <chrono>
-#include <thread>
 #include <random>
 
 #define MIN_TIME 1000

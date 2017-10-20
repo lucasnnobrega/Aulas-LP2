@@ -24,6 +24,26 @@ class Banheiro{
 
 	Estabelecimento* estabelecimento;//Acesso ao contexto do estabelecimento
 
+
+	int get_capacidadeTotal();//Numero maximo de pessoas que devem estar no banheiro
+	int get_maxConsecutivos();//Numero maximo de pessoas do mesmo sexo entrando consecutivamente
+	int get_numeroDeMulheres();//Mulheres no banheiro
+	int get_numeroDeHomens();//Homens no banheiro
+	int get_nMesmoSexo(); //Numero de pessoas do mesmo sexo que entraram consecutivamente 
+	int get_nMulheresAtrasadas(); //Mulheres esperando sua vez
+	int get_nHomensAtrasados(); //Homens esperando sua vez
+	
+	
+	
+	void set_capacidadeTotal(int a);//Numero maximo de pessoas que devem estar no banheiro
+	void set_maxConsecutivos(int a);//Numero maximo de pessoas do mesmo sexo entrando consecutivamente
+	void set_numeroDeMulheres(int a);//Mulheres no banheiro
+	void set_numeroDeHomens(int a);//Homens no banheiro
+	void set_nMesmoSexo(int a); //Numero de pessoas do mesmo sexo que entraram consecutivamente 
+	
+	void set_nMulheresAtrasadas(int a); //Mulheres esperando sua vez
+	void set_nHomensAtrasados(int a); //Homens esperando sua vez
+		
     public: 
     Banheiro(int capcidadeTotal, maxConsecutivos);
 	bool cheio();
