@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Pessoa.h"
-#include "./Banheiro.h"
+#include "Banheiro.h"
+#include <mutex>
 #include <vector>
 
 #define HOMEM 1
@@ -12,8 +13,21 @@
 class Pessoa;
 
 class Estabelecimento{
-    Banheiro banheiro(MAX_PESSOAS_BANHEIRO);
+  Banheiro banheiro(MAX_PESSOAS_BANHEIRO);
 	std::vector<Pessoa*> pessoas;
-	public:
-	addPessoa(int sex);
+  int nMulheresAtrasadas;
+  int nHomensAtrasados;
+  std::mutex semHomem;
+  std::mutex semMulher;
+  std::mutex semBox;
+  
+  public:
+  void addPessoa(int sex);
+  void iniciar();
+
+  void set_nHomensAtrasados(int num);
+  void set_nMulheresAtrasadas(int num);
+  
+  int get_nHomensAtrasados();
+  int get_nMulheresAtrasadas();
 };

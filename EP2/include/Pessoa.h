@@ -31,8 +31,11 @@ class RandomGenerator{
 class Pessoa{
         RandomGenerator randomDis;
         Banheiro* banheiroAtual;
+        int id;
+
         public:
         virtual void entrarNoBanheiro(Banheiro& banheiro);
+        void necessidades();
         void sairDoBanheiro();
         void dormir();
         Pessoa(){};
