@@ -24,14 +24,11 @@ int Pessoa::getId(){
 }
 
 void Pessoa::run(){
-	sync_cout << "Thread " << id << " esperando na barrera" << sync_endl;
-	while(!Pessoa::barreira){}
-	sync_cout << "Thread " << id << " saiu da barreira" << sync_endl;
 	while(1){
 		entrarNoBanheiro(banheiroAtual);
-		std::this_thread::sleep_for(std::chrono::milliseconds(randomDis()));
+		dormir();
 		sairDoBanheiro();
-		std::this_thread::sleep_for(std::chrono::milliseconds(randomDis()+400));
+		dormir();
 	}
 }
 

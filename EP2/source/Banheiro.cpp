@@ -6,7 +6,7 @@ bool Banheiro::cheio(){
 }
 
 Banheiro::Banheiro(int maxPessoas, int maxConsecutivos_) : capacidadeTotal(maxPessoas), maxConsecutivos(maxConsecutivos_){
-
+	semMulher.lock();
 }
 
 //Getters

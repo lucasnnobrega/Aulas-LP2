@@ -2,7 +2,6 @@
 
 void Homem::entrarNoBanheiro(Banheiro* b){
 	this->banheiroAtual = b;
-	sync_cout << "Homem com id " << id << "tentou entrar" << sync_endl;
 	b->e.lock();
 	//Protocolo de entrada da seção critica
 	//Homem espera sempre que:
@@ -11,6 +10,7 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 	|| (b->get_nMesmoSexo() == b->get_maxConsecutivos()))
 	{
 		//Homem ao iniciar a espera
+		sync_cout << id << " Entrou na fila " << sync_endl;
 		b->set_nHomensAtrasados((b->get_nHomensAtrasados()+1));
 		b->e.unlock();
 		b->semHomem.lock();
@@ -20,7 +20,7 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 	b->set_numeroDeHomens((b->get_numeroDeHomens()+1));
 	b->set_nMesmoSexo((b->get_nMesmoSexo()+1));
 
-	sync_cout << "O homem com id " <<  id << " entrou" << sync_endl;
+	sync_cout << id << " Entrou no banheiro; nMesmoSexo: " << b->get_nMesmoSexo() << " , " << b->get_maxConsecutivos() << sync_endl;
 	
 	//SIGNAL 1
 	if(b->get_nHomensAtrasados() > 0)
@@ -34,11 +34,10 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 }
 
 void Homem::sairDoBanheiro(){
-	sync_cout << "O homem com id " << id << " saiu" << sync_endl;
-
 	//Homem sinaliza
 	banheiroAtual->e.lock();//P(e)
 	banheiroAtual->set_numeroDeHomens(banheiroAtual->get_numeroDeHomens()-1);
+	sync_cout << id <<  " Saiu do banheiro" << sync_endl;
 	
 	//SIGNAL 2
 	if(banheiroAtual->get_nMesmoSexo() == banheiroAtual->get_maxConsecutivos())

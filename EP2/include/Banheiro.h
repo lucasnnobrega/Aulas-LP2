@@ -6,6 +6,7 @@
 class Estabelecimento;
 
 class Banheiro{
+
 	int capacidadeTotal;//Numero maximo de pessoas que devem estar no banheiro
 	int maxConsecutivos;//Numero maximo de pessoas do mesmo sexo entrando consecutivamente
 	int numeroDeMulheres = 0;//Mulheres no banheiro
