@@ -1,9 +1,12 @@
 #include "../include/Estabelecimento.h"
 
-void Estabelecimento::addPessoa(int sexo){
+void Estabelecimento::addPessoa(int sex, int id){
     if(sexo == HOMEM){
-        Pessoa *newPessoa = new Homem();
-        
+        Pessoa *newPessoa = new Homem(id);
+        pessoas.push_back(newPessoa);
+    }else{
+        Pessoa *newPessoa = new Mulher(id);
+        pessoas.push_back(newPessoa);
     }
 }
 

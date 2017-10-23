@@ -16,3 +16,12 @@ void Pessoa::sairDoBanheiro(){
 
 }
 
+void Pessoa::run(){
+	while(1){
+		entrarNoBanheiro(banheiroAtual);
+	}
+}
+Pessoa::Pessoa(int n){
+	id = n;
+	thread 
+}

@@ -31,13 +31,15 @@ class Pessoa{
     protected:
         RandomGenerator randomDis;
         Banheiro* banheiroAtual;
+        std::thread *thread;
         int id;
 
     public:
         virtual void entrarNoBanheiro(Banheiro& banheiro);
+        void run();
         void necessidades();
         virtual void sairDoBanheiro();
         void dormir();
-        Pessoa(int n){};
+        Pessoa(int n);
 };
 #endif

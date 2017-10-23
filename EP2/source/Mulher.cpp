@@ -26,8 +26,9 @@ void Mulher::entrarNoBanheiro(Banheiro *b)
         b->e.unlock();
     }
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-    this->sairDoBanheiro(b);
+    
+    //std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+    //this->sairDoBanheiro(b);
 }
 
 void Mulher::sairDoBanheiro(){
