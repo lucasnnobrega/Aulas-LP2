@@ -3,10 +3,7 @@
 #include <iostream>
 #include <mutex>
 
-#include "../include/Homem.h"
-#include "../include/Mulher.h"
-
-class estabelecimento;
+class Estabelecimento;
 
 class Banheiro{
 	int capacidadeTotal;//Numero maximo de pessoas que devem estar no banheiro
@@ -18,6 +15,9 @@ class Banheiro{
 	int nMulheresAtrasadas = 0; //Mulheres esperando sua vez
 	int nHomensAtrasados = 0; //Homens esperando sua vez
 	
+	std::mutex semHomem; //Semaforo do homem
+	std::mutex semMulher; //Semaforo da mulher
+	std::mutex e; //Semaforo regiao critca 
 	
 	Estabelecimento* estabelecimento;//Acesso ao contexto do estabelecimento	
 	
@@ -30,8 +30,6 @@ public:
 	int get_nMulheresAtrasadas(); //Mulheres esperando sua vez
 	int get_nHomensAtrasados(); //Homens esperando sua vez
 	
-	
-	
 	void set_capacidadeTotal(int a);//Numero maximo de pessoas que devem estar no banheiro
 	void set_maxConsecutivos(int a);//Numero maximo de pessoas do mesmo sexo entrando consecutivamente
 	void set_numeroDeMulheres(int a);//Mulheres no banheiro
@@ -41,12 +39,11 @@ public:
 	void set_nMulheresAtrasadas(int a); //Mulheres esperando sua vez
 	void set_nHomensAtrasados(int a); //Homens esperando sua vez
 	
-    Banheiro(int capcidadeTotal, maxConsecutivos);
+    Banheiro(int capacidadeTotal, int maxConsecutivos);
 	bool cheio();
 	friend class Homem;
 	friend class Mulher;
-	std::mutex semHomem; //Semaforo do homem
-	std::mutex semMulher; //Semaforo da mulher
-	std::mutex e; //Semaforo regiao critca 
+	friend class Pessoa;
+
 };
 #endif

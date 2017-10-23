@@ -1,8 +1,10 @@
 #include <iostream>
-#include "Pessoa.h"
-#include "Banheiro.h"
 #include <mutex>
 #include <vector>
+#include "./Homem.h"
+#include "./Banheiro.h"
+#include "./Mulher.h"
+#include "./sync_printer.h"
 
 #define HOMEM 1
 #define MULHER 2
@@ -11,21 +13,14 @@
 #define MAX_PESSOAS_TOTAL 10
 
 class Estabelecimento{
+  bool start = 0;
   Banheiro *banheiro;
-	std::vector<Pessoa*> pessoas;
-  int nMulheresAtrasadas;
-  int nHomensAtrasados;
-  std::mutex semHomem;
-  std::mutex semMulher;
-  std::mutex semBox;
+  std::vector<Pessoa*> pessoas;
   
   public:
-  void addPessoa(int sex);
+  Estabelecimento(){}
+  ~Estabelecimento();
+  void set_banheiro(Banheiro* b);
+  void addPessoa(int sex, int id, Banheiro* banheiroInicial);
   void iniciar();
-
-  void set_nHomensAtrasados(int num);
-  void set_nMulheresAtrasadas(int num);
-  
-  int get_nHomensAtrasados();
-  int get_nMulheresAtrasadas();
 };

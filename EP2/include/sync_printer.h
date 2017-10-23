@@ -5,6 +5,7 @@
 #include <iostream>
 #include <type_traits>
 #include <mutex>
+#include "fifo_mutex.h"
 //Essa classe, quando passada para o operador<< sobrecarregado, ira garantir que o buffer stringSoFar seja empurrado para std::cout.
 class Endl{
 	static Endl endl;

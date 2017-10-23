@@ -1,17 +1,18 @@
 
-#ifndef PESSOA
-#define PESSOA
+#ifndef PESSOA_
+#define PESSOA_
 #include <iostream>
 #include <mutex>
+#include <thread>
 #include <random>
 #include "sync_printer.h"
+#include "./Banheiro.h"
 
 #define MIN_TIME 1000
 #define MAX_TIME 3000
 
 using namespace std;
 
-class Banheiro;
 
 //GERANDO  VALORES ALEATORIOS QUE SERÃO UTILIZADOS NO SLEEP
 class RandomGenerator{	
@@ -22,7 +23,7 @@ class RandomGenerator{
         RandomGenerator(int min = MIN_TIME, int max = MAX_TIME) : dis(min,max){
             gen.seed(rd());
         }
-        double operator()(){
+        int operator()(){
             return dis(gen);
         }
 };
@@ -30,16 +31,20 @@ class RandomGenerator{
 class Pessoa{
     protected:
         RandomGenerator randomDis;
-        Banheiro* banheiroAtual;
         std::thread *thread;
         int id;
-
     public:
-        virtual void entrarNoBanheiro(Banheiro& banheiro);
+		static bool barreira;
+
+        Banheiro* banheiroAtual;
+
+		int getId();
+        virtual void entrarNoBanheiro(Banheiro* banheiro);
         void run();
         void necessidades();
         virtual void sairDoBanheiro();
         void dormir();
         Pessoa(int n);
+		~Pessoa();
 };
 #endif

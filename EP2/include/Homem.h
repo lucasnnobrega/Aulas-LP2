@@ -1,10 +1,15 @@
-#ifndef HOMEM
-#define HOMEM
+#ifndef HOMEM__
+#define HOMEM__
 #include "Pessoa.h"
+#include "sync_printer.h"
 
-class Homem : public Pessoa{
+class Banheiro;
+
+class Homem : public Pessoa {
     public:
         void entrarNoBanheiro(Banheiro *b);
-        void sairDoBanheiro(Banheiro *b);
+        void sairDoBanheiro();
+		Homem();
+		Homem(int);
 };
 #endif
