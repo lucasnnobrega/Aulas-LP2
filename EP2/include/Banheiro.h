@@ -17,14 +17,11 @@ class Banheiro{
 
 	int nMulheresAtrasadas = 0; //Mulheres esperando sua vez
 	int nHomensAtrasados = 0; //Homens esperando sua vez
-
-	std::mutex semHomem; //Semaforo do homem
-	std::mutex semMulher; //Semaforo da mulher
-	std::mutex e; //Semaforo regiao critca 
-
-	Estabelecimento* estabelecimento;//Acesso ao contexto do estabelecimento
-
-
+	
+	
+	Estabelecimento* estabelecimento;//Acesso ao contexto do estabelecimento	
+	
+public: 
 	int get_capacidadeTotal();//Numero maximo de pessoas que devem estar no banheiro
 	int get_maxConsecutivos();//Numero maximo de pessoas do mesmo sexo entrando consecutivamente
 	int get_numeroDeMulheres();//Mulheres no banheiro
@@ -43,11 +40,13 @@ class Banheiro{
 	
 	void set_nMulheresAtrasadas(int a); //Mulheres esperando sua vez
 	void set_nHomensAtrasados(int a); //Homens esperando sua vez
-		
-    public: 
+	
     Banheiro(int capcidadeTotal, maxConsecutivos);
 	bool cheio();
 	friend class Homem;
 	friend class Mulher;
-  };
+	std::mutex semHomem; //Semaforo do homem
+	std::mutex semMulher; //Semaforo da mulher
+	std::mutex e; //Semaforo regiao critca 
+};
 #endif

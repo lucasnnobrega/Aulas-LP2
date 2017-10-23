@@ -1,7 +1,10 @@
 #include "../include/Estabelecimento.h"
 
 void Estabelecimento::addPessoa(int sexo){
-
+    if(sexo == HOMEM){
+        Pessoa *newPessoa = new Homem();
+        
+    }
 }
 
 void Estabelecimento::iniciar(){

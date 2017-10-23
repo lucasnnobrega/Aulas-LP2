@@ -4,6 +4,7 @@
 #include <iostream>
 #include <mutex>
 #include <random>
+#include "sync_printer.h"
 
 #define MIN_TIME 1000
 #define MAX_TIME 3000
@@ -18,24 +19,25 @@ class RandomGenerator{
     std::mt19937 gen;
     std::uniform_int_distribution<> dis;
     public:
-    RandomGenerator(int min = MIN_TIME, int max = MAX_TIME) : dis(min,max){
-    	gen.seed(rd());
-    }
-    double operator()(){
-	    return dis(gen);
-    }
+        RandomGenerator(int min = MIN_TIME, int max = MAX_TIME) : dis(min,max){
+            gen.seed(rd());
+        }
+        double operator()(){
+            return dis(gen);
+        }
 };
 
 class Pessoa{
+    protected:
         RandomGenerator randomDis;
         Banheiro* banheiroAtual;
         int id;
 
-        public:
+    public:
         virtual void entrarNoBanheiro(Banheiro& banheiro);
         void necessidades();
-        void sairDoBanheiro();
+        virtual void sairDoBanheiro();
         void dormir();
-        Pessoa(){};
+        Pessoa(int n){};
 };
 #endif
