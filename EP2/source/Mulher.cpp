@@ -1,12 +1,17 @@
 #include "../include/Mulher.h"
 
+Mulher::Mulher(int id) : Pessoa(id){
+
+}
+
 void Mulher::entrarNoBanheiro(Banheiro *b)
 {
     this->banheiroAtual = b;
+	sync_cout << id << " entrou na fila " << sync_endl;
     b->e.lock();
     if((b->get_capacidadeTotal() == b->get_numeroDeMulheres() || b->get_capacidadeTotal() == b->get_numeroDeHomens()) 
 	|| (b->get_numeroDeHomens() > 0)
-	|| (b->get_nMesmoSexo() == b->get_maxConsecutivos())
+	|| (b->get_nMesmoSexo() == b->get_maxConsecutivos()))
 	{
 		//Homem ao iniciar a espera
 		b->set_nMulheresAtrasadas((b->get_nMulheresAtrasadas()+1));
@@ -16,6 +21,8 @@ void Mulher::entrarNoBanheiro(Banheiro *b)
     
     b->set_numeroDeMulheres(b->get_numeroDeMulheres()+1);
     b->set_nMesmoSexo(b->get_nMesmoSexo()+1);
+
+	sync_cout << "A mulher " << id << " entrou" << sync_endl;
     
     //SIGNAL 1
     if(b->get_nHomensAtrasados() > 0)
@@ -32,6 +39,7 @@ void Mulher::entrarNoBanheiro(Banheiro *b)
 }
 
 void Mulher::sairDoBanheiro(){
+	sync_cout << "A mulher " << id << " saiu" << sync_endl;
     //Mulher sinaliza
 	banheiroAtual->e.lock();//P(e)
 	banheiroAtual->set_numeroDeMulheres(banheiroAtual->get_numeroDeMulheres()-1);

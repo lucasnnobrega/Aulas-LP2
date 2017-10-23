@@ -5,6 +5,10 @@ bool Banheiro::cheio(){
 	return (numeroDeMulheres + numeroDeHomens == capacidadeTotal) ? true : false;
 }
 
+Banheiro::Banheiro(int maxPessoas, int maxConsecutivos_) : capacidadeTotal(maxPessoas), maxConsecutivos(maxConsecutivos_){
+
+}
+
 //Getters
 int Banheiro::get_capacidadeTotal     (){ return capacidadeTotal;    }
 int Banheiro::get_maxConsecutivos     (){ return maxConsecutivos;    }

@@ -1,4 +1,4 @@
-#include "./sync_printer.h"
+#include "../include/sync_printer.h"
 
 std::stringstream sync_cout_t::stringSoFar;
 sync_cout_t* sync_cout_t::thisPtr = nullptr;
