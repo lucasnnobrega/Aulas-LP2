@@ -1,9 +1,5 @@
 #include "../include/Mulher.h"
 
-Mulher::Mulher(int id) : Pessoa(id){
-
-}
-
 void Mulher::entrarNoBanheiro(Banheiro *b)
 {
     this->banheiroAtual = b;
@@ -20,7 +16,8 @@ void Mulher::entrarNoBanheiro(Banheiro *b)
     }
     
     b->numeroDeMulheres++;
-    b->mulheresConsecutivas++;
+	b->mulheresConsecutivas++;
+	b->homensConsecutivos = 0;
 
 	sync_cout << id << " \033[1;35m[MULHER]\033[0m Entrou no banheiro" << sync_endl;
     
@@ -51,3 +48,5 @@ void Mulher::sairDoBanheiro(){
 		banheiroAtual->e.unlock();
 	}
 }
+
+Mulher::Mulher(int id) : Pessoa(id){}

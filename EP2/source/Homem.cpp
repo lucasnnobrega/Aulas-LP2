@@ -19,6 +19,7 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 	//Após a entrada no banheiro, imediatamente
 	b->numeroDeHomens++;
 	b->homensConsecutivos++;
+	b->mulheresConsecutivas = 0;
 
 	sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou no banheiro" << sync_endl;
 	
@@ -50,6 +51,6 @@ void Homem::sairDoBanheiro(){
 	}
 }
 
-Homem::Homem(int n):Pessoa(n){}
+Homem::Homem(int id):Pessoa(id){}
 
 
