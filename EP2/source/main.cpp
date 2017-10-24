@@ -19,7 +19,9 @@ int main(){
 	}
 	*/
 	meuEstabelecimento.addPessoa(HOMEM, 1, &meuBanheiro);
-	meuEstabelecimento.addPessoa(MULHER, 2, &meuBanheiro);
+	meuEstabelecimento.addPessoa(HOMEM, 2, &meuBanheiro);
+	meuEstabelecimento.addPessoa(MULHER, 3, &meuBanheiro);
+	meuEstabelecimento.addPessoa(MULHER, 4, &meuBanheiro);
 	char a;
 	std::cin >> a;
 	meuEstabelecimento.iniciar();

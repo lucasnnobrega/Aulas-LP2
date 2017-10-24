@@ -1,31 +1,31 @@
 #include "../include/Homem.h"
 
 void Homem::entrarNoBanheiro(Banheiro* b){
-	this->banheiroAtual = b;
+	banheiroAtual = b;
 	b->e.lock();
 	//Protocolo de entrada da seção critica
 	//Homem espera sempre que:
-	if((b->get_capacidadeTotal() == b->get_numeroDeMulheres() || b->get_capacidadeTotal() == b->get_numeroDeHomens()) 
-	|| (b->get_numeroDeMulheres() > 0)
-	|| (b->get_nMesmoSexo() == b->get_maxConsecutivos()))
+	if((b->capacidadeTotal == b->numeroDeHomens) 
+	|| (b->numeroDeMulheres > 0)
+	|| (b->homensConsecutivos >= b->maxConsecutivos))
 	{
 		//Homem ao iniciar a espera
-		sync_cout << id << " Entrou na fila " << sync_endl;
-		b->set_nHomensAtrasados((b->get_nHomensAtrasados()+1));
+		sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou na fila" << sync_endl;
+		b->nHomensAtrasados++;
 		b->e.unlock();
 		b->semHomem.lock();
 	}
 
 	//Após a entrada no banheiro, imediatamente
-	b->set_numeroDeHomens((b->get_numeroDeHomens()+1));
-	b->set_nMesmoSexo((b->get_nMesmoSexo()+1));
+	b->numeroDeHomens++;
+	b->homensConsecutivos++;
 
-	sync_cout << id << " Entrou no banheiro; nMesmoSexo: " << b->get_nMesmoSexo() << " , " << b->get_maxConsecutivos() << sync_endl;
+	sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou no banheiro" << sync_endl;
 	
 	//SIGNAL 1
-	if(b->get_nHomensAtrasados() > 0)
+	if(b->nHomensAtrasados > 0)
 	{
-		b->set_nHomensAtrasados((b->get_nHomensAtrasados()-1));
+		b->nHomensAtrasados--;
 		b->semHomem.unlock();
 	}else{
 		b->e.unlock();
@@ -36,15 +36,16 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 void Homem::sairDoBanheiro(){
 	//Homem sinaliza
 	banheiroAtual->e.lock();//P(e)
-	banheiroAtual->set_numeroDeHomens(banheiroAtual->get_numeroDeHomens()-1);
-	sync_cout << id <<  " Saiu do banheiro" << sync_endl;
+	banheiroAtual->numeroDeHomens--;
+	sync_cout << id <<  " \033[1;31m [HOMEM]\033[0mSaiu do banheiro" << sync_endl;
 	
 	//SIGNAL 2
-	if(banheiroAtual->get_nMesmoSexo() == banheiroAtual->get_maxConsecutivos())
+	if(banheiroAtual->homensConsecutivos >= banheiroAtual->maxConsecutivos)
 	{
-		banheiroAtual->set_nMesmoSexo(0);
+		banheiroAtual->homensConsecutivos = 0;
 		banheiroAtual->semMulher.unlock();
 	}else{
+
 		banheiroAtual->e.unlock();
 	}
 }

@@ -1,0 +1,68 @@
+#include "../include/Mulher.h"
+
+
+void Mulher::entrarNoBanheiro(Banheiro *b){
+	banheiroAtual  = b;
+	b->e.lock();
+	assert(b != nullptr);
+	locked = true;
+	delayed = false;
+
+	if(b->get_capacidadeTotal() == b->get_numeroDeMulheres() || b->get_capacidadeTotal() == b->get_numeroDeHomens()){
+		b->set_nHomensAtrasados(b->get_numeroDeHomens() + 1);
+		b->e.unlock();
+		locked = false;
+		delayed = true;
+		b->semMulher.lock();
+	}
+	else if (b->get_numeroDeHomens() > 0){
+		b->set_nHomensAtrasados(b->get_numeroDeHomens() + 1);
+		locked = false;
+		delayed = true;
+		b->e.unlock();
+		b->semMulher.lock();
+	}
+	else if(b->get_mulheresConsecutivas() == b->get_maxConsecutivos()){
+		b->set_nHomensAtrasados(b->get_numeroDeHomens() + 1);
+		locked = false;
+		delayed = true;
+		b->e.unlock();
+		b->semHomem.lock();
+	}
+
+	//Passe o bastão
+	
+	if(b->get_capacidadeTotal() > b->get_numeroDeHomens() && b->get_mulheresConsecutivas() < b->get_maxConsecutivos()){
+		sync_cout << id << " Quer passar a vez para Mulher "<< sync_endl;
+		b->semMulher.unlock();
+	}
+	else if(b->get_homensConsecutivos() == b->get_maxConsecutivos()){
+		sync_cout << id << " Quer passar a vez para Homem"<< sync_endl;
+		b->semHomem.unlock();
+	}
+	else{
+		sync_cout << id << " Quer passar a vez para Ninguem"<< sync_endl;
+		b->e.unlock();
+	}
+
+}
+
+void Mulher::sairDoBanheiro(){
+	banheiroAtual->e.lock();
+
+	banheiroAtual->set_numeroDeMulheres(banheiroAtual->get_numeroDeMulheres() - 1);
+
+	if(banheiroAtual->get_nHomensAtrasados() > 0 && banheiroAtual->get_numeroDeHomens() == 0){
+		banheiroAtual->set_nHomensAtrasados(banheiroAtual->get_nHomensAtrasados() - 1);
+		banheiroAtual->semHomem.unlock();
+	}
+	else if(banheiroAtual->get_nMulheresAtrasadas() > 0 && banheiroAtual->get_homensConsecutivos() < banheiroAtual->get_maxConsecutivos()){
+		banheiroAtual->set_nMulheresAtrasadas(banheiroAtual->get_nMulheresAtrasadas() - 1);
+		banheiroAtual->semMulher.unlock();
+	}
+	else{
+		banheiroAtual->e.unlock();
+	}
+}
+
+Mulher::Mulher(int id, Banheiro* b) : Pessoa(id,b){}
