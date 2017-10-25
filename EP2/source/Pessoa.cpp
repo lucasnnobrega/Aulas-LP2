@@ -8,7 +8,7 @@ bool Pessoa::barreira = false;
 
 void Pessoa::dormir() {
 	int duration = randomDis();
-	std::this_thread::sleep_for(std::chrono::milliseconds(duration));
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 }
 
 void Pessoa::entrarNoBanheiro(Banheiro* banheiro){
