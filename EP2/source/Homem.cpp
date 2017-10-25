@@ -53,13 +53,17 @@ void Homem::sairDoBanheiro(){
 	sync_cout << id <<  " \033[1;31m[HOMEM]\033[0m Saiu do banheiro \n" << banheiroAtual->toString() << sync_endl;
 	
 	//SIGNAL 2
-	if(banheiroAtual->nMulheresAtrasadas > 0 && banheiroAtual->numeroDeHomens == 0)
+	if(banheiroAtual->nMulheresAtrasadas > 0 && 
+		banheiroAtual->numeroDeHomens == 0 && 
+		(banheiroAtual->nUtilizacoes <= banheiroAtual->maxUtilizacao))
 	{
 		banheiroAtual->nMulheresAtrasadas--;
 		sync_cout << "m u" << sync_endl;
 		banheiroAtual->semMulher.unlock();
 
-	}else if(banheiroAtual->nHomensAtrasados > 0 && banheiroAtual->homensConsecutivos < banheiroAtual->maxConsecutivos){
+	}else if(banheiroAtual->nHomensAtrasados > 0 && 
+		banheiroAtual->homensConsecutivos < banheiroAtual->maxConsecutivos ){
+		
 		banheiroAtual->nHomensAtrasados--;
 		sync_cout << "h u" << sync_endl;	
 		banheiroAtual->semHomem.unlock();

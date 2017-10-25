@@ -25,13 +25,16 @@ int Pessoa::getId(){
 
 void Pessoa::run(){
 	while(1){
-		if(banheiroAtual->nUtilizacoes > banheiroAtual->maxUtilizacao){
-			std::exit(1);
-		}
-		entrarNoBanheiro(banheiroAtual);
+		if(banheiroAtual->nUtilizacoes <= banheiroAtual->maxUtilizacao)
+		{	
+		entrarNoBanheiro(banheiroAtual);	
 		dormir();
 		sairDoBanheiro();
 		dormir();
+		}else{
+			sync_cout << id <<"BANHEIRO FECHOU" << sync_endl;
+			return;
+		}
 	}
 }
 
