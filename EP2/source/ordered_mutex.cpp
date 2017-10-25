@@ -1,4 +1,5 @@
 #include "../include/ordered_mutex.h"
+
 void ordered_mutex::lock(){
 	std::unique_lock<std::mutex> acquire(cvar_lock);
 	if(locked){

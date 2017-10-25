@@ -3,6 +3,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <queue>
+#include "./sync_printer.h"
 
 class ordered_mutex {
     std::queue<std::condition_variable>  cvar;

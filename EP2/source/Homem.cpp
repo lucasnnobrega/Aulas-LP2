@@ -2,6 +2,7 @@
 
 void Homem::entrarNoBanheiro(Banheiro* b){
 	banheiroAtual = b;
+	sync_cout << "e l" << sync_endl;
 	b->e.lock();
 	//Protocolo de entrada da seção critica
 	//Homem espera sempre que:
@@ -12,7 +13,10 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 		//Homem ao iniciar a espera
 		sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou na fila \n" << b->toString() << sync_endl;
 		b->nHomensAtrasados++;
+
+		sync_cout << "e u" << sync_endl;
 		b->e.unlock();
+		sync_cout << "h l" << sync_endl;
 		b->semHomem.lock();
 	}
 
@@ -29,8 +33,10 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 	   b->numeroDeHomens < b->capacidadeTotal)
 	{
 		b->nHomensAtrasados--;
+		sync_cout << "h u" << sync_endl;
 		b->semHomem.unlock();
 	}else{
+		sync_cout << "e u" << sync_endl;
 		b->e.unlock();
 	}
 
@@ -38,6 +44,7 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 
 void Homem::sairDoBanheiro(){
 	//Homem sinaliza
+	sync_cout << "e l" << sync_endl;
 	banheiroAtual->e.lock();//P(e)
 	banheiroAtual->numeroDeHomens--;
 	sync_cout << id <<  " \033[1;31m[HOMEM]\033[0m Saiu do banheiro \n" << banheiroAtual->toString() << sync_endl;
@@ -46,13 +53,16 @@ void Homem::sairDoBanheiro(){
 	if(banheiroAtual->nMulheresAtrasadas > 0 && banheiroAtual->numeroDeHomens == 0)
 	{
 		banheiroAtual->nMulheresAtrasadas--;
+		sync_cout << "m u" << sync_endl;
 		banheiroAtual->semMulher.unlock();
 
 	}else if(banheiroAtual->nHomensAtrasados > 0 && banheiroAtual->homensConsecutivos < banheiroAtual->maxConsecutivos){
-		banheiroAtual->nHomensAtrasados--;	
+		banheiroAtual->nHomensAtrasados--;
+		sync_cout << "h u" << sync_endl;	
 		banheiroAtual->semHomem.unlock();
 	}
 	else{
+		sync_cout << "e u" << sync_endl;
 		banheiroAtual->e.unlock();
 	}
 }
