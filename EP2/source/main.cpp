@@ -27,7 +27,8 @@ int main(int argc, char* argv[]){
 	
     }else{
         sync_cout << "Numero de argumentos errado.\nUtilização: ./main [NUMERO DE HOMENS] [NUMERO DE MULHERES] [MAXIMO DE UTILIZAÇÕES DO BANHEIRO] [CAPACIDADE DO BANHEIRO] [MAXIMO DE UTILIZAÇÕES CONSECUTIVAS]" << sync_endl;        
-    }
+		std::exit(1);
+	}
 
 	//capacidade e máximos consecutivos
 	Banheiro meuBanheiro(capacidade_banheiro, utilizacao_consec, max_utilizacao);

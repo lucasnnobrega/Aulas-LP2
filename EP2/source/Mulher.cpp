@@ -2,30 +2,36 @@
 
 void Mulher::entrarNoBanheiro(Banheiro *b){
 	banheiroAtual = b;
-	sync_cout << "e l" << sync_endl;
+	//sync_cout << "e l" << sync_endl;
 	b->e.lock();
 	//Protocolo de entrada da seção critica
 	//Mulher espera sempre que:
 	if(b->nUtilizacoes > b->maxUtilizacao){
-		sync_cout << "e u" << sync_endl;
+		//sync_cout << "e u" << sync_endl;
 		b->e.unlock();
 	}else if((b->capacidadeTotal == b->numeroDeMulheres) 
 			|| (b->numeroDeHomens > 0)
-			|| (b->mulheresConsecutivas == b->maxConsecutivos))
+			|| (b->mulheresConsecutivas == b->maxConsecutivos)
+			||	 (b->nUtilizacoes + 1 >= b->maxUtilizacao))
 			{
+	
 				//Mulher ao iniciar a espera
 				sync_cout << id << " \033[1;35m[MULHER]\033[0m Entrou na fila \n" << b->toString() <<  sync_endl;
 				b->nMulheresAtrasadas++;
-				sync_cout << "e u" << sync_endl;
+				
+				//sync_cout << "e u" << sync_endl;
 				b->e.unlock();
-				sync_cout << "m l" << sync_endl;
+				//sync_cout << "m l" << sync_endl;
+
 				b->semMulher.lock();
-			}
+	}
+			
 	//Após a entrada no banheiro, imediatamente
 	b->nUtilizacoes++;
     b->numeroDeMulheres++;
 	b->mulheresConsecutivas++;
 	b->homensConsecutivos = 0;
+
 
 	sync_cout << id << " \033[1;35m[MULHER]\033[0m Entrou no banheiro \n" << b->toString() <<  sync_endl;
     
@@ -35,11 +41,11 @@ void Mulher::entrarNoBanheiro(Banheiro *b){
 	   b->numeroDeMulheres < b->capacidadeTotal)
     {
 		b->nMulheresAtrasadas--;
-		sync_cout << "m u" << sync_endl;
+		//sync_cout << "m u" << sync_endl;
 		b->semMulher.unlock();
 	//	b->e.unlock();//TESTE!!!!!!!!!!!!!!!!!!1
     }else{
-		sync_cout << "e u" << sync_endl;
+		//sync_cout << "e u" << sync_endl;
         b->e.unlock();
     }
 
@@ -47,7 +53,7 @@ void Mulher::entrarNoBanheiro(Banheiro *b){
 
 void Mulher::sairDoBanheiro(){
 	//Mulher sinaliza
-	sync_cout << "e l" << sync_endl;
+	//sync_cout << "e l" << sync_endl;
 	banheiroAtual->e.lock();//P(e)
 	banheiroAtual->numeroDeMulheres--;
 	sync_cout << id << " \033[1;35m[MULHER]\033[0m Saiu do banheiro \n" << banheiroAtual->toString() <<  sync_endl;
@@ -58,18 +64,18 @@ void Mulher::sairDoBanheiro(){
 		(banheiroAtual->nUtilizacoes <= banheiroAtual->maxUtilizacao))
 	{
 		banheiroAtual->nHomensAtrasados--;
-		sync_cout << "h u" << sync_endl;
+	//	sync_cout << "h u" << sync_endl;
 		banheiroAtual->semHomem.unlock();
 
 	}else if(banheiroAtual->nMulheresAtrasadas > 0 && 
 		banheiroAtual->mulheresConsecutivas < banheiroAtual->maxConsecutivos){
 		
 		banheiroAtual->nMulheresAtrasadas--;
-		sync_cout << "m u" << sync_endl;
+		//sync_cout << "m u" << sync_endl;
 		banheiroAtual->semMulher.unlock();
 	}
 	else{
-		sync_cout << "e u" << sync_endl;
+	//	sync_cout << "e u" << sync_endl;
 		banheiroAtual->e.unlock();
 	}
 }
