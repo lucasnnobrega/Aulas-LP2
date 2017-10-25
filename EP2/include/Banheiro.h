@@ -2,6 +2,8 @@
 #define BANHEIRO
 #include <iostream>
 #include "../include/ordered_mutex.h"
+#include <string>
+#include <sstream>
 //#include <mutex>
 
 class Estabelecimento;
@@ -23,7 +25,7 @@ class Banheiro{
 	ordered_mutex e; //Semaforo regiao critca 
 	
 	Estabelecimento* estabelecimento;//Acesso ao contexto do estabelecimento	
-	
+
 public: 
 	/*
 	int get_capacidadeTotal();//Numero maximo de pessoas que devem estar no banheiro
@@ -49,6 +51,6 @@ public:
 	friend class Homem;
 	friend class Mulher;
 	friend class Pessoa;
-
+	std::string toString();
 };
 #endif

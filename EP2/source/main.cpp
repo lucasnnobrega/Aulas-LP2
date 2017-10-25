@@ -1,7 +1,7 @@
 #include "../include/Estabelecimento.h"
 
 int main(){
-	Banheiro meuBanheiro(5, 1);
+	Banheiro meuBanheiro(2,2);
 	sync_cout << "Banheiro criado" << sync_endl;
 	Estabelecimento meuEstabelecimento;
 	std::cout << "Estabelecimento criado" << std::endl;
@@ -19,9 +19,11 @@ int main(){
 	}
 	*/
 	meuEstabelecimento.addPessoa(HOMEM, 1, &meuBanheiro);
-	meuEstabelecimento.addPessoa(HOMEM, 2, &meuBanheiro);
-	meuEstabelecimento.addPessoa(MULHER, 3, &meuBanheiro);
+	meuEstabelecimento.addPessoa(HOMEM, 3, &meuBanheiro);
+	//meuEstabelecimento.addPessoa(HOMEM, 5, &meuBanheiro);
+	meuEstabelecimento.addPessoa(MULHER, 2, &meuBanheiro);
 	meuEstabelecimento.addPessoa(MULHER, 4, &meuBanheiro);
+	//meuEstabelecimento.addPessoa(MULHER, 6, &meuBanheiro);
 	char a;
 	std::cin >> a;
 	meuEstabelecimento.iniciar();

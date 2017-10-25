@@ -7,10 +7,10 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 	//Homem espera sempre que:
 	if((b->capacidadeTotal == b->numeroDeHomens) 
 	|| (b->numeroDeMulheres > 0)
-	|| (b->homensConsecutivos >= b->maxConsecutivos))
+	|| (b->homensConsecutivos == b->maxConsecutivos))
 	{
 		//Homem ao iniciar a espera
-		sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou na fila" << sync_endl;
+		sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou na fila \n" << b->toString() << sync_endl;
 		b->nHomensAtrasados++;
 		b->e.unlock();
 		b->semHomem.lock();
@@ -21,7 +21,7 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 	b->homensConsecutivos++;
 	b->mulheresConsecutivas = 0;
 
-	sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou no banheiro" << sync_endl;
+	sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou no banheiro \n" <<  b->toString() << sync_endl;
 	
 	//SIGNAL 1
 	if(b->nHomensAtrasados > 0 &&
@@ -40,7 +40,7 @@ void Homem::sairDoBanheiro(){
 	//Homem sinaliza
 	banheiroAtual->e.lock();//P(e)
 	banheiroAtual->numeroDeHomens--;
-	sync_cout << id <<  " \033[1;31m[HOMEM]\033[0m Saiu do banheiro" << sync_endl;
+	sync_cout << id <<  " \033[1;31m[HOMEM]\033[0m Saiu do banheiro \n" << banheiroAtual->toString() << sync_endl;
 	
 	//SIGNAL 2
 	if(banheiroAtual->nMulheresAtrasadas > 0 && banheiroAtual->numeroDeHomens == 0)

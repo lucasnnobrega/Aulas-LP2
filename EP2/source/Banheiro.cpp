@@ -7,7 +7,17 @@ bool Banheiro::cheio(){
 
 Banheiro::Banheiro(int maxPessoas, int maxConsecutivos_) : capacidadeTotal(maxPessoas), maxConsecutivos(maxConsecutivos_){
 	semMulher.lock();
+	semHomem.lock();
 }
+
+std::string Banheiro::toString(){
+	std::stringstream stream;	
+	stream << "(dH,dM,nH,nM,mC,hC) = \n(" << 
+	nHomensAtrasados << "," << nMulheresAtrasadas << "," << numeroDeHomens << "," <<
+	numeroDeMulheres << "," << mulheresConsecutivas << "," << homensConsecutivos << ")";
+	return stream.str();
+}
+
 
 /*
 //Getters
