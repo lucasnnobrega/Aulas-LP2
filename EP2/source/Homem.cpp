@@ -6,21 +6,24 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 	b->e.lock();
 	//Protocolo de entrada da seção critica
 	//Homem espera sempre que:
-	if((b->capacidadeTotal == b->numeroDeHomens) 
-	|| (b->numeroDeMulheres > 0)
-	|| (b->homensConsecutivos == b->maxConsecutivos))
-	{
-		//Homem ao iniciar a espera
-		sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou na fila \n" << b->toString() << sync_endl;
-		b->nHomensAtrasados++;
-
+	if(b->nUtilizacoes > b->maxUtilizacao){
 		sync_cout << "e u" << sync_endl;
 		b->e.unlock();
-		sync_cout << "h l" << sync_endl;
-		b->semHomem.lock();
-	}
+	}else if((b->capacidadeTotal == b->numeroDeHomens) 
+			|| (b->numeroDeMulheres > 0)
+			|| (b->homensConsecutivos == b->maxConsecutivos))
+			{
+				//Homem ao iniciar a espera
+				sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou na fila \n" << b->toString() << sync_endl;
+				b->nHomensAtrasados++;
+				sync_cout << "e u" << sync_endl;
+				b->e.unlock();
+				sync_cout << "h l" << sync_endl;
+				b->semHomem.lock();
+			}
 
 	//Após a entrada no banheiro, imediatamente
+	b->nUtilizacoes++;
 	b->numeroDeHomens++;
 	b->homensConsecutivos++;
 	b->mulheresConsecutivas = 0;

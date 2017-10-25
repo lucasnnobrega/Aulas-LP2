@@ -25,6 +25,9 @@ int Pessoa::getId(){
 
 void Pessoa::run(){
 	while(1){
+		if(banheiroAtual->nUtilizacoes > banheiroAtual->maxUtilizacao){
+			std::exit(1);
+		}
 		entrarNoBanheiro(banheiroAtual);
 		dormir();
 		sairDoBanheiro();

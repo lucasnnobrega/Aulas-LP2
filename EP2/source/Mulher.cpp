@@ -1,23 +1,28 @@
 #include "../include/Mulher.h"
 
-void Mulher::entrarNoBanheiro(Banheiro *b)
-{
-	this->banheiroAtual = b;
+void Mulher::entrarNoBanheiro(Banheiro *b){
+	banheiroAtual = b;
 	sync_cout << "e l" << sync_endl;
-    b->e.lock();
-    if((b->capacidadeTotal == b->numeroDeMulheres) 
-	|| (b->numeroDeHomens > 0)
-	|| (b->mulheresConsecutivas == b->maxConsecutivos))
-	{
-		//Mulher ao iniciar a espera
-		sync_cout << id << " \033[1;35m[MULHER]\033[0m Entrou na fila \n" << b->toString() <<  sync_endl;
-		b->nMulheresAtrasadas++;
+	b->e.lock();
+	//Protocolo de entrada da seção critica
+	//Mulher espera sempre que:
+	if(b->nUtilizacoes > b->maxUtilizacao){
 		sync_cout << "e u" << sync_endl;
 		b->e.unlock();
-		sync_cout << "m l" << sync_endl;
-		b->semMulher.lock();
-	}
-	
+	}else if((b->capacidadeTotal == b->numeroDeMulheres) 
+			|| (b->numeroDeHomens > 0)
+			|| (b->mulheresConsecutivas == b->maxConsecutivos))
+			{
+				//Mulher ao iniciar a espera
+				sync_cout << id << " \033[1;35m[MULHER]\033[0m Entrou na fila \n" << b->toString() <<  sync_endl;
+				b->nMulheresAtrasadas++;
+				sync_cout << "e u" << sync_endl;
+				b->e.unlock();
+				sync_cout << "m l" << sync_endl;
+				b->semMulher.lock();
+			}
+	//Após a entrada no banheiro, imediatamente
+	b->nUtilizacoes++;
     b->numeroDeMulheres++;
 	b->mulheresConsecutivas++;
 	b->homensConsecutivos = 0;
