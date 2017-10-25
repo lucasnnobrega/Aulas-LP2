@@ -22,11 +22,13 @@ void Mulher::entrarNoBanheiro(Banheiro *b)
 	sync_cout << id << " \033[1;35m[MULHER]\033[0m Entrou no banheiro" << sync_endl;
     
     //SIGNAL 1
-    if(b->nMulheresAtrasadas > 0)
+    if(b->nMulheresAtrasadas > 0 && 
+	   b->mulheresConsecutivas < b->maxConsecutivos &&
+	   b->numeroDeMulheres < b->capacidadeTotal)
     {
         b->nMulheresAtrasadas++;
         b->semMulher.unlock();
-		b->e.unlock();//TESTE!!!!!!!!!!!!!!!!!!1
+	//	b->e.unlock();//TESTE!!!!!!!!!!!!!!!!!!1
     }else{
         b->e.unlock();
     }

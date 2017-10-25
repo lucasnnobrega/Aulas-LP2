@@ -1,6 +1,7 @@
 #ifndef BANHEIRO
 #define BANHEIRO
 #include <iostream>
+#include "../include/ordered_mutex.h"
 #include <mutex>
 
 class Estabelecimento;
@@ -17,9 +18,9 @@ class Banheiro{
 	int nMulheresAtrasadas = 0; //Mulheres esperando sua vez
 	int nHomensAtrasados = 0; //Homens esperando sua vez
 	
-	std::mutex semHomem; //Semaforo do homem
-	std::mutex semMulher; //Semaforo da mulher
-	std::mutex e; //Semaforo regiao critca 
+	ordered_mutex semHomem; //Semaforo do homem
+	ordered_mutex semMulher; //Semaforo da mulher
+	ordered_mutex e; //Semaforo regiao critca 
 	
 	Estabelecimento* estabelecimento;//Acesso ao contexto do estabelecimento	
 	

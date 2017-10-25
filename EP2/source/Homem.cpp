@@ -24,7 +24,9 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 	sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou no banheiro" << sync_endl;
 	
 	//SIGNAL 1
-	if(b->nHomensAtrasados > 0)
+	if(b->nHomensAtrasados > 0 &&
+	   b->homensConsecutivos < b->maxConsecutivos &&
+	   b->numeroDeHomens < b->capacidadeTotal)
 	{
 		b->nHomensAtrasados--;
 		b->semHomem.unlock();
@@ -38,7 +40,7 @@ void Homem::sairDoBanheiro(){
 	//Homem sinaliza
 	banheiroAtual->e.lock();//P(e)
 	banheiroAtual->numeroDeHomens--;
-	sync_cout << id <<  " \033[1;31m [HOMEM]\033[0mSaiu do banheiro" << sync_endl;
+	sync_cout << id <<  " \033[1;31m[HOMEM]\033[0m Saiu do banheiro" << sync_endl;
 	
 	//SIGNAL 2
 	if(banheiroAtual->homensConsecutivos >= banheiroAtual->maxConsecutivos)
