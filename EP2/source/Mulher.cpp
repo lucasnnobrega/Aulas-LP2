@@ -42,7 +42,7 @@ void Mulher::sairDoBanheiro(){
 	sync_cout << id << " \033[1;35m[MULHER]\033[0m Saiu do banheiro" << sync_endl;
 	
 	//SIGNAL 2
-	if(banheiroAtual->mulheresConsecutivas == banheiroAtual->maxConsecutivos)
+	if(banheiroAtual->mulheresConsecutivas >= banheiroAtual->maxConsecutivos)
 	{
 		banheiroAtual->mulheresConsecutivas = 0;
 		banheiroAtual->semHomem.unlock();

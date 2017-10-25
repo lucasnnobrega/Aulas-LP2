@@ -48,7 +48,6 @@ void Homem::sairDoBanheiro(){
 		banheiroAtual->homensConsecutivos = 0;
 		banheiroAtual->semMulher.unlock();
 	}else{
-
 		banheiroAtual->e.unlock();
 	}
 }
