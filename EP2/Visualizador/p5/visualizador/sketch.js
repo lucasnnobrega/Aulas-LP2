@@ -85,7 +85,13 @@ function Bathroom(x,y,w,h,slots,q){
 	}
 
 	this.update = function(){
-		if(changed == 0) return
+		if(changed == 0){ 
+			return
+		}
+		if(currentLine == strings.length){
+			alert('Banheiro fechou!')
+			return
+		}
 
 		changed = 0
 
@@ -303,6 +309,7 @@ function setup() {
 	bathroom = new Bathroom(100,100, 120,windowHeight - 200, 100, 10)
 	createCanvas(windowWidth, windowHeight);
 	
+	/*
 	input = createInput()
 	input.position(windowHeight/2, 100)
 
@@ -363,7 +370,7 @@ function setup() {
 	offset += windowWidth/6
 
 	input.value('')
-
+	*/
 }
 
 function preload(){
