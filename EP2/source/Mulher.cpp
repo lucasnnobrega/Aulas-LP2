@@ -25,6 +25,9 @@ int Mulher::entrarNoBanheiro(Banheiro *b){
 				b->semMulher.lock();
 
 				if(b->nUtilizacoes >= b->maxUtilizacao){
+					Logger::log(LIBEROU_SEM, SEM_E);
+					b->e.unlock();
+
 					return 0;				
 				}
 	}

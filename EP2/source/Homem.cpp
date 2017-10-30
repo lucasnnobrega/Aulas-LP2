@@ -23,6 +23,9 @@ int Homem::entrarNoBanheiro(Banheiro* b){
 				Logger::log(BLOQUEOU_SEM, SEM_H);
 				b->semHomem.lock();
 				if(b->nUtilizacoes >= b->maxUtilizacao){
+					Logger::log(LIBEROU_SEM, SEM_E);
+					b->e.unlock();
+
 					return 0;
 				}
 	}
