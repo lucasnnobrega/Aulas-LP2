@@ -5,19 +5,18 @@ int n_mulher;
 int max_utilizacao;
 int capacidade_banheiro;
 int utilizacao_consec;
-char* logPath;
+const char* logPath = "../Visualizador/p5/visualizador/log.txt";
 
 int main(int argc, char* argv[]){
 
     //sync_cout<<"Utilização: ./main [NUMERO DE HOMENS] [NUMERO DE MULHERES] [MAXIMO DE UTILIZAÇÕES DO BANHEIRO] [CAPACIDADE DO BANHEIRO] [MAXIMO DE UTILIZAÇÕES CONSECUTIVAS]" << sync_endl;
 
-    if(argc == 7){
+    if(argc == 6){
         n_homem              = atoi(argv[1]);
         n_mulher             = atoi(argv[2]);
         max_utilizacao       = atoi(argv[3]);
         capacidade_banheiro  = atoi(argv[4]);
         utilizacao_consec    = atoi(argv[5]);
-		logPath              = argv[6];
 		
 		sync_cout << "Parametros capturados:" << sync_endl;
 		
@@ -26,10 +25,9 @@ int main(int argc, char* argv[]){
         sync_cout << "Maximo de utilizacoes\t\t= " << max_utilizacao      << sync_endl;
         sync_cout << "Capacidade do banheiro\t\t= " << capacidade_banheiro << sync_endl;
         sync_cout << "Maximo consecutivos\t\t= " << utilizacao_consec   << sync_endl;
-        sync_cout << "Caminho do log\t\t\t= " << logPath   << sync_endl;
 	
     }else{
-        sync_cout << "Numero de argumentos errado.\nUtilização: ./main [NUMERO DE HOMENS] [NUMERO DE MULHERES] [MAXIMO DE UTILIZAÇÕES DO BANHEIRO] [CAPACIDADE DO BANHEIRO] [MAXIMO DE UTILIZAÇÕES CONSECUTIVAS] [CAMINHO DO LOG]" << sync_endl;        
+        sync_cout << "Numero de argumentos errado.\nUtilização: ./main [NUMERO DE HOMENS] [NUMERO DE MULHERES] [MAXIMO DE UTILIZAÇÕES DO BANHEIRO] [CAPACIDADE DO BANHEIRO] [MAXIMO DE UTILIZAÇÕES CONSECUTIVAS]" << sync_endl;        
 		std::exit(1);
 	}
 

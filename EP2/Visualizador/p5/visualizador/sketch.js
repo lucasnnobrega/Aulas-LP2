@@ -22,14 +22,15 @@ let LIBEROU_SEMAFORO = 4
 let SEME = 6
 let SEMH = 7
 let SEMM = 8
-//O banheiro a ser exibido
+
 let bathroom
 let state = [-1,-1]
 let lastState = [-2,-2]
 
-
-let file = '{"signal": 5, "id": 2}'
-
+//O log
+let strings
+let changed = 0
+let currentLine = 0
 ////////////////////////////////////////////////////////////////
 function Semaphore(x,y,r){
 	this.pos = [x,y]
@@ -84,71 +85,90 @@ function Bathroom(x,y,w,h,slots,q){
 	}
 
 	this.update = function(){
+		if(changed == 0) return
+
+		changed = 0
+
+		newState = JSON.parse(strings[currentLine])
+		state[0] = newState.signal
+		state[1] = newState.id
+
 		signal = state[0]
 		id = state[1]
 
-		if(state[0] == lastState[0] && state[1] == lastState[1])
-			return 1
-
-		lastState = state
+		console.log(state.toString())
 
 		switch(signal){
 		case CHEGOU_NO_ESTABELECIMENTO:
 			bathroom.waitingLine.add({id:id, gender:(id%2 != 0)? HOMEM:MULHER})
 			break
 		case ENTROU_NA_FILA:
-			if(state[1] % 2 != 0){
+			if( state[1] %2 != 0){
 				if(bathroom.waitingLine.people.find((each)=>{
-					if(each.id == state[1]) return true
+					if(each.id == state[1]) 
+						return true
 				}) != undefined){
 					bathroom.waitingLine.remove(state[1])
-					bathroom.mLine.add({id:state[1], gender: HOMEM})
+					bathroom.mLine.add({id:state[1], gender:HOMEM})
 				}
 			}
-			else if(bathroom.waitingLine.people.find((each)=>{
-				if(each.id == state[1])	return true
-			}) != undefined){
-				bathroom.waitingLine.remove(state[1])
-				bathroom.fLine.add({id:state[1], gender:MULHER})
-			}
-			bathroom.waitingLine.remove(id)//Presuposto que tal pessoa ja passou pela waiting line
+			else
+				if(bathroom.waitingLine.people.find((each)=>{
+					if(each.id == state[1]) 
+						return true
+				}) != undefined){
+					bathroom.waitingLine.remove(state[1])
+					bathroom.fLine.add({id:state[1], gender:MULHER})
+				}
+
 			break;
 		case ENTROU_NO_BANHEIRO:
-
-		
-
-			bathroom.slots.add({id:id, gender:(id%2 != 0)? HOMEM:MULHER})
-			bathroom.slots.add(id, (id%2 != 0)? HOMEM:MULHER)	
+			if( state[1] %2 != 0){//Se for homem
+				if(this.waitingLine.people.find((each)=>{if(each.id == id) return true}) != undefined){
+					//Se veio da waiting line
+					this.waitingLine.remove(id)
+					this.slots.add({id:id, gender:HOMEM})
+				}
+				else{
+					//Se veio da fila
+					this.mLine.remove(id)
+					this.slots.add({id:id, gender:HOMEM})
+				}
+			}
+			else{
+				if(this.waitingLine.people.find((each)=>{if(each.id == id) return true}) != undefined){
+					//Se veio da waiting line
+					this.waitingLine.remove(id)
+					this.slots.add({id:id, gender:MULHER})
+				}
+				else{
+					//Se veio da fila
+					this.fLine.remove(id)
+					this.slots.add({id:id, gender:MULHER})
+				}	
+			}
 			break
 		case SAIU_DO_BANHEIRO:
 			bathroom.slots.remove(id)
-			bathroom.waitingLine.add(id, (id%2 != 0)? HOMEM:MULHER)
+			bathroom.waitingLine.add({id:id, gender:(id % 2 != 0)? HOMEM:MULHER})
 			break
 		case LIBEROU_SEMAFORO:
-			switch(id){
-				case SEME:
-					bathroom.semE.unlock()
-					break
-				case SEMH:
-					bathroom.semHomem.unlock()
-					break
-				case SEMM:
-					bathroom.semMulher.unlock()
-					break;
-			}
+			if(id == SEME)
+				this.semE.unlock()
+			else if(id == SEMH)
+				this.semHomem.unlock()
+			else if(id == SEMM)
+				this.semMulher.unlock()
 			break
 		case BLOQUEOU_SEMAFORO:
-			switch(id){
-				case SEME:
-					bathroom.semE.lock()
-					break
-				case SEMH:
-					bathroom.semHomem.lock()
-					break
-				case SEMM:
-					bathroom.semMulher.lock()
-					break;
-			}
+			if(id == SEME)
+				this.semE.lock()
+			else if(id == SEMH)
+				this.semHomem.lock()
+			else if(id == SEMM)
+				this.semMulher.lock()
+			break
+		default:
 			break
 		}
 	}
@@ -261,6 +281,13 @@ function Pessoa(gender,id){
 }
 var id = 1;
 ////////////////////////////////////////////////////////////////
+function keyPressed(){
+	if(keyCode == ENTER){
+		currentLine++
+		changed = 1
+	}
+}
+////////////////////////////////////////////////////////////////
 var signalEntrouBanheiro
 var signalSaiuBanheiro
 var signalEntrouFila
@@ -282,84 +309,65 @@ function setup() {
 
 	signalEntrouBanheiro = createButton('Entrou Banheiro')
 	signalEntrouBanheiro.position(40 + offset, windowHeight - 40)
-	offset += windowWidth/5
+	offset += windowWidth/6
 
 	signalEntrouBanheiro.mousePressed(function () {
-		state[1] = input.value()
 		state[0] = ENTROU_NO_BANHEIRO
-		bathroom.slots.add({id: state[1], gender: (state[1]%2 != 0)? HOMEM:MULHER})
+		state[1] = input.value()
+		changed = 1
 	})
 
 	signalEntrouFila = createButton('Entrou fila')
 	signalEntrouFila.position(40 + offset, windowHeight - 40)
 	signalEntrouFila.mousePressed(function(){
+		state[0] = ENTROU_NA_FILA
 		state[1] = input.value()
-		state[0] = ENTROU_NO_BANHEIRO
-
-		
-
-		if( state[1] %2 != 0){
-			if(bathroom.waitingLine.people.find((each)=>{
-				if(each.id == state[1]) 
-					return true
-			}) != undefined){
-				bathroom.waitingLine.remove(state[1])
-				bathroom.mLine.add({id:state[1], gender:HOMEM})
-			}
-		}
-		else
-			if(bathroom.waitingLine.people.find((each)=>{
-				if(each.id == state[1]) 
-					return true
-			}) != undefined){
-				bathroom.waitingLine.remove(state[1])
-				bathroom.fLine.add({id:state[1], gender:MULHER})
-			}
+		changed = 1
 	})
-	offset += windowWidth/5
+	offset += windowWidth/6
 
 	signalEntrouEstabelecimento = createButton('Entrou mall')
 	signalEntrouEstabelecimento.position(40 + offset, windowHeight - 40)
 	signalEntrouEstabelecimento.mousePressed(function (){
-		state[1] = input.value()
 		state[0] = CHEGOU_NO_ESTABELECIMENTO
-
-		bathroom.waitingLine.add({id:id, gender:(id%2!=0)? HOMEM:MULHER})
-		id++
+		state[1] = input.value()
+		changed = 1
 	})
-	offset += windowWidth/5
+	offset += windowWidth/6
 
 	signalSaiuBanheiro = createButton('Saiu banheiro')
 	signalSaiuBanheiro.position(40+offset, windowHeight - 40)
 	signalSaiuBanheiro.mousePressed(function(){
 		state[0] = SAIU_DO_BANHEIRO
 		state[1] = input.value()
+		changed = 1
 	})
-	offset += windowWidth/5
+	offset += windowWidth/6
 
 	signalBloqueouSem = createButton('Bloqueou sem')
 	signalBloqueouSem.position(40+offset, windowHeight - 40)
 	signalBloqueouSem.mousePressed(function(){
 		state[0] = BLOQUEOU_SEMAFORO 
 		state[1] = input.value()
+		changed = 1
 	})
-	offset += windowWidth/5
+	offset += windowWidth/6
 
 	signalLiberouSem = createButton('Liberal sem')
 	signalLiberouSem.position(40+offset, windowHeight - 40)
 	signalLiberouSem.mousePressed(function(){
 		state[0] = LIBEROU_SEMAFORO
 		state[1] = input.value()
+		changed = 1
 	})
-	offset += windowWidth/5
+	offset += windowWidth/6
 
 	input.value('')
 
-	var s = JSON.parse(file)
-	state[0] = s.signal
-	state[1] = s.id
-	
+}
 
+function preload(){
+	strings = loadStrings('log.txt')
 }
 
 function draw() {

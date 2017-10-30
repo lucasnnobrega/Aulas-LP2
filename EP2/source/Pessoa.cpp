@@ -24,6 +24,7 @@ int Pessoa::getId(){
 }
 
 void Pessoa::run(){
+	Logger::log(CHEGOU_NO_ESTABELECIMENTO, id);
 	while(1){
 		if(banheiroAtual->nUtilizacoes + 1 <= banheiroAtual->maxUtilizacao)
 		{	

@@ -6,7 +6,7 @@ Logger* Logger::instance = nullptr;
 ordered_mutex Logger::mut;
 
 Logger::Logger(const char* path){
-	Logger::file.open(path, std::ios_base::app);
+	Logger::file.open(path,std::ios_base::trunc);
 	if(!Logger::file.is_open())
 		throw std::runtime_error("Couldn't open especified file");	
 }
