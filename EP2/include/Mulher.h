@@ -1,6 +1,7 @@
 #ifndef MULHER_
 #define MULHER_
 #include "Pessoa.h"
+#include "../include/Logger.h"
 
 class Banheiro;
 

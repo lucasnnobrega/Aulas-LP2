@@ -2,6 +2,8 @@
 #define HOMEM__
 #include "Pessoa.h"
 #include "sync_printer.h"
+#include "../include/Logger.h"
+
 
 class Banheiro;
 
