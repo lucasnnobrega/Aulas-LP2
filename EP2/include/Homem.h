@@ -7,7 +7,7 @@ class Banheiro;
 
 class Homem : public Pessoa {
     public:
-        void entrarNoBanheiro(Banheiro *b);
+        int entrarNoBanheiro(Banheiro *b);
         void sairDoBanheiro();
 		Homem();
 		Homem(int);

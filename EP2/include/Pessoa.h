@@ -5,8 +5,20 @@
 #include <mutex>
 #include <thread>
 #include <random>
+#include "Logger.h"
 #include "sync_printer.h"
 #include "./Banheiro.h"
+
+#define ENTROU_NO_BANHEIRO 1
+#define SAIU_DO_BANHEIRO 2
+#define ENTROU_NA_FILA 3
+#define CHEGOU_NO_ESTABELECIMENTO 4
+#define LIBEROU_SEM 5
+#define BLOQUEOU_SEM 6
+
+#define SEM_H 7
+#define SEM_M 8
+#define SEM_E 9
 
 #define MIN_TIME 1300
 #define MAX_TIME 3000
@@ -39,7 +51,7 @@ class Pessoa{
         Banheiro* banheiroAtual;
 
 		int getId();
-        virtual void entrarNoBanheiro(Banheiro* banheiro);
+        virtual int entrarNoBanheiro(Banheiro* banheiro);
         void run();
         virtual void sairDoBanheiro();
         void dormir();

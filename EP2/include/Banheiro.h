@@ -8,8 +8,8 @@
 class Estabelecimento;
 
 class Banheiro{
-
-	
+	bool inUse = false;
+		
 	int maxUtilizacao;
 	int nUtilizacoes = 0;
  	int capacidadeTotal;//Numero maximo de pessoas que devem estar no banheiro

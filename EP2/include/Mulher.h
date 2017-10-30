@@ -6,7 +6,7 @@ class Banheiro;
 
 class Mulher : public Pessoa{
     public:
-    void entrarNoBanheiro(Banheiro* banheiro);
+    int entrarNoBanheiro(Banheiro* banheiro);
     void sairDoBanheiro();
 	Mulher(int id);
 };

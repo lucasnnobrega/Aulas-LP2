@@ -1,37 +1,41 @@
 #include "../include/Homem.h"
 
-void Homem::entrarNoBanheiro(Banheiro* b){
+int Homem::entrarNoBanheiro(Banheiro* b){
 	banheiroAtual = b;
 	//sync_cout << "e l" << sync_endl;
+	Logger::log(BLOQUEOU_SEM, SEM_E);
 	b->e.lock();
 	//Protocolo de entrada da seção critica
 	//Homem espera sempre que:
-	if(b->nUtilizacoes > b->maxUtilizacao){
-	//	sync_cout << "e u" << sync_endl;
-		b->e.unlock();
-	}else if((b->capacidadeTotal == b->numeroDeHomens) 
+	if((b->capacidadeTotal == b->numeroDeHomens) 
 			|| (b->numeroDeMulheres > 0)
 			|| (b->homensConsecutivos == b->maxConsecutivos)
 			||(b->nUtilizacoes + 1 >= b->maxUtilizacao) )
 			{
-				 
-				//Homem ao iniciar a espera
-				sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou na fila \n" << b->toString() << sync_endl;
 				b->nHomensAtrasados++;
+
+				Logger::log(ENTROU_NA_FILA, id);	
+				sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou na fila \n" << b->toString() << sync_endl;
 				
-				//sync_cout << "e u" << sync_endl;
+				Logger::log(LIBEROU_SEM, SEM_E);
 				b->e.unlock();
-				//sync_cout << "h l" << sync_endl;
+
+				Logger::log(BLOQUEOU_SEM, SEM_H);
 				b->semHomem.lock();
-			}
+				if(b->nUtilizacoes >= b->maxUtilizacao){
+					return 0;
+				}
+	}
 
 	
 	//Após a entrada no banheiro, imediatamente
 	b->nUtilizacoes++;
 	b->numeroDeHomens++;
 	b->homensConsecutivos++;
+	b->inUse = true;
 	b->mulheresConsecutivas = 0;
 
+	Logger::log(ENTROU_NO_BANHEIRO, id);
 	sync_cout << id << " \033[1;31m[HOMEM] \033[0mEntrou no banheiro \n" <<  b->toString() << sync_endl;
 	
 	//SIGNAL 1
@@ -40,40 +44,53 @@ void Homem::entrarNoBanheiro(Banheiro* b){
 	   b->numeroDeHomens < b->capacidadeTotal)
 	{
 		b->nHomensAtrasados--;
-	//	sync_cout << "h u" << sync_endl;
+
+		Logger::log(LIBEROU_SEM, SEM_H);
 		b->semHomem.unlock();
 	}else{
-	//	sync_cout << "e u" << sync_endl;
+		Logger::log(LIBEROU_SEM, SEM_E);
 		b->e.unlock();
 	}
-
+	return 0;
 }
 
 void Homem::sairDoBanheiro(){
 	//Homem sinaliza
-	//sync_cout << "e l" << sync_endl;
-	banheiroAtual->e.lock();//P(e)
+	Logger::log(BLOQUEOU_SEM, SEM_E);
+	banheiroAtual->e.lock();
+
 	banheiroAtual->numeroDeHomens--;
+	
+	Logger::log(SAIU_DO_BANHEIRO, id);
 	sync_cout << id <<  " \033[1;31m[HOMEM]\033[0m Saiu do banheiro \n" << banheiroAtual->toString() << sync_endl;
+
+	if(banheiroAtual->numeroDeHomens == 0 && banheiroAtual->nUtilizacoes + 1 > banheiroAtual->maxUtilizacao){
+		Logger::end();
+		std::exit(0);
+	}
 	
 	//SIGNAL 2
 	if(banheiroAtual->nMulheresAtrasadas > 0 && 
 		banheiroAtual->numeroDeHomens == 0 && 
-		(banheiroAtual->nUtilizacoes < banheiroAtual->maxUtilizacao))
+		(banheiroAtual->nUtilizacoes + 1 <=  banheiroAtual->maxUtilizacao))
 	{
 		banheiroAtual->nMulheresAtrasadas--;
-	//	sync_cout << "m u" << sync_endl;
+
+		Logger::log(LIBEROU_SEM, SEM_M);
 		banheiroAtual->semMulher.unlock();
 
 	}else if(banheiroAtual->nHomensAtrasados > 0 && 
-		banheiroAtual->homensConsecutivos < banheiroAtual->maxConsecutivos ){
+		banheiroAtual->homensConsecutivos < banheiroAtual->maxConsecutivos &&
+		banheiroAtual->nUtilizacoes + 1 <= banheiroAtual->maxUtilizacao
+		){
 		
 		banheiroAtual->nHomensAtrasados--;
-	//	sync_cout << "h u" << sync_endl;	
+
+		Logger::log(LIBEROU_SEM, SEM_H);
 		banheiroAtual->semHomem.unlock();
 	}
 	else{
-	//	sync_cout << "e u" << sync_endl;
+		Logger::log(LIBEROU_SEM, SEM_E);
 		banheiroAtual->e.unlock();
 	}
 }

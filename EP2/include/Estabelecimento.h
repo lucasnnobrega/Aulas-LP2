@@ -18,7 +18,7 @@ class Estabelecimento{
   std::vector<Pessoa*> pessoas;
   
   public:
-  Estabelecimento(){}
+  Estabelecimento(const char* path);
   ~Estabelecimento();
   void set_banheiro(Banheiro* b);
   void addPessoa(int sex, int id, Banheiro* banheiroInicial);

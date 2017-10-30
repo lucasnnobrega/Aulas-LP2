@@ -11,7 +11,7 @@ void Pessoa::dormir() {
 	std::this_thread::sleep_for(std::chrono::milliseconds(duration));
 }
 
-void Pessoa::entrarNoBanheiro(Banheiro* banheiro){
+int Pessoa::entrarNoBanheiro(Banheiro* banheiro){
 
 }
 
@@ -25,15 +25,15 @@ int Pessoa::getId(){
 
 void Pessoa::run(){
 	while(1){
-		if(banheiroAtual->nUtilizacoes < banheiroAtual->maxUtilizacao)
+		if(banheiroAtual->nUtilizacoes + 1 <= banheiroAtual->maxUtilizacao)
 		{	
-		entrarNoBanheiro(banheiroAtual);	
-		dormir();
-		sairDoBanheiro();
-		dormir();
-		}else if(!(banheiroAtual->numeroDeHomens > 0 || banheiroAtual->numeroDeMulheres > 0)){
-			std::exit(1);
-			return;
+			entrarNoBanheiro(banheiroAtual);	
+			//Caso o banheiro tenha fechado enquanto estava na fila, va embora
+			dormir();
+			sairDoBanheiro();
+			dormir();
+		}else{
+			break;
 		}
 	}
 }

@@ -14,12 +14,15 @@ void Estabelecimento::addPessoa(int sex, int id, Banheiro* banheiroInicial){
 
 void Estabelecimento::set_banheiro(Banheiro* b){
 	banheiro = b;
-	sync_cout << "Banheiro setado" << sync_endl;
 }
 
 void Estabelecimento::iniciar(){
 	sync_cout << "Liberando barreira" << sync_endl;
 	Pessoa::barreira = true;
+}
+
+Estabelecimento::Estabelecimento(const char* path){
+	Logger::start(path);
 }
 
 Estabelecimento::~Estabelecimento(){
