@@ -10,4 +10,8 @@ diversões.
 
 #### Exercício de Programação 2
 Utiliza semáforos para implementar a passagem de bastão para simular um banheiro
-unissex
+unissex.
+
+#### Exercício de Programação 3
+Utiliza o problema do barbeiro dorminhoco para implementar monitores em C++,
+com semáforos e com variáveis condicionais.
