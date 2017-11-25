@@ -5,10 +5,9 @@
 #include <mutex>
 #include <thread>
 #include <condition_variable>
-#include 
+#include "./include/Pessoa.h"
 
-
-class Cliente(Pessoa){
+class Cliente : public Pessoa{
     
 public:
     //Métodos
